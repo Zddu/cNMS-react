@@ -1,7 +1,7 @@
 {
-  "name": "react_luo",
+  "name": "could-nsm",
   "version": "1.0.0",
-  "description": "react脚手架,最新技术",
+  "description": "云运维-设备监测运维一体化",
   "main": "index.js",
   "scripts": {
     "start": "node server.js --max_old_space_size=4096",
@@ -16,7 +16,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/javaLuo/react-luo.git"
+    "url": "git+https://gitee.com/zdde/cool-network-system-react.git"
   },
   "installConfig": {
     "pnp": false
