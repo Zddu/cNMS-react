@@ -4,6 +4,8 @@ import type { ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import DirectoryTree from 'antd/lib/tree/DirectoryTree';
 import { getAllDevice } from '@/api/device/device';
+import { Button, Modal } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
 const DEVICE_TYPE = {
   host: '服务器',
@@ -86,12 +88,9 @@ const treeData = [
 
 const DeviceView = () => {
   const [key, setKey] = useState('1');
+  const [visible, setVisible] = useState(false);
   const onSelect = (keys: React.Key[], info: any) => {
     setKey(keys[0] as string);
-  };
-
-  const onExpand = () => {
-    console.log('Trigger Expand');
   };
 
   return (
@@ -105,7 +104,7 @@ const DeviceView = () => {
         tableRender={(_, dom) => (
           <div className="device-view-wrapper">
             <div className="device-tree">
-              <DirectoryTree defaultExpandAll onSelect={onSelect} onExpand={onExpand} treeData={treeData} />
+              <DirectoryTree defaultExpandAll onSelect={onSelect} treeData={treeData} />
             </div>
             <div className="device-table">{dom}</div>
           </div>
@@ -113,6 +112,18 @@ const DeviceView = () => {
         params={{
           key,
         }}
+        toolBarRender={() => [
+          <Button
+            key="primary"
+            type="primary"
+            onClick={() => {
+              setVisible(true);
+            }}
+          >
+            <PlusOutlined />
+            添加新设备
+          </Button>,
+        ]}
         request={async param => {
           console.log('param', param);
           const { data }: any = await getAllDevice();
@@ -123,6 +134,37 @@ const DeviceView = () => {
         }}
         dateFormatter="string"
       />
+
+      <Modal
+        visible={visible}
+        title="添加新设备"
+        onCancel={() => {
+          setVisible(false);
+        }}
+        footer={[
+          <Button
+            key="back"
+            onClick={() => {
+              console.log('取消');
+              setVisible(false);
+            }}
+          >
+            取消
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            onClick={() => {
+              console.log('提交');
+              setVisible(false);
+            }}
+          >
+            提交
+          </Button>,
+        ]}
+      >
+        <div>111</div>
+      </Modal>
     </div>
   );
 };
