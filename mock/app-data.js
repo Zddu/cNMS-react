@@ -17,51 +17,51 @@ let id_sequence = 1000;
 const users = [
   {
     id: 1,
-    username: "admin",
-    password: "123456",
-    phone: "13600000000",
-    email: "admin@react.com",
-    desc: "超级管理员",
+    username: 'admin',
+    password: '123456',
+    phone: '13600000000',
+    email: 'admin@react.com',
+    desc: '超级管理员',
     conditions: 1,
     roles: [1, 2, 3],
   },
   {
     id: 2,
-    username: "user",
-    password: "123456",
-    phone: "13600000001",
-    email: "user@react.com",
-    desc: "普通管理员",
+    username: 'user',
+    password: '123456',
+    phone: '13600000001',
+    email: 'user@react.com',
+    desc: '普通管理员',
     conditions: 1,
     roles: [2],
   },
   {
     id: 3,
-    username: "user",
-    password: "123456",
-    phone: "13600000001",
-    email: "user@react.com",
-    desc: "普通管理员3",
+    username: 'user',
+    password: '123456',
+    phone: '13600000001',
+    email: 'user@react.com',
+    desc: '普通管理员3',
     conditions: 1,
     roles: [2],
   },
   {
     id: 4,
-    username: "user",
-    password: "123456",
-    phone: "13600000001",
-    email: "user@react.com",
-    desc: "普通管理员4",
+    username: 'user',
+    password: '123456',
+    phone: '13600000001',
+    email: 'user@react.com',
+    desc: '普通管理员4',
     conditions: 1,
     roles: [2],
   },
   {
     id: 5,
-    username: "user",
-    password: "123456",
-    phone: "13600000001",
-    email: "user@react.com",
-    desc: "普通管理员5",
+    username: 'user',
+    password: '123456',
+    phone: '13600000001',
+    email: 'user@react.com',
+    desc: '普通管理员5',
     conditions: 1,
     roles: [2],
   },
@@ -71,62 +71,82 @@ const users = [
 const menus = [
   {
     id: 1,
-    title: "首页",
-    icon: "icon-home",
-    url: "/home",
+    title: '首页',
+    icon: 'icon-home',
+    url: '/home',
     parent: null,
-    desc: "首页",
+    desc: '首页',
     sorts: 0,
     conditions: 1,
   },
   {
     id: 2,
-    title: "系统管理",
-    icon: "icon-setting",
-    url: "/system",
+    title: '系统管理',
+    icon: 'icon-setting',
+    url: '/system',
     parent: null,
-    desc: "系统管理目录分支",
+    desc: '系统管理目录分支',
     sorts: 1,
     conditions: 1,
   },
   {
     id: 3,
-    title: "用户管理",
-    icon: "icon-user",
-    url: "/system/useradmin",
+    title: '用户管理',
+    icon: 'icon-user',
+    url: '/system/useradmin',
     parent: 2,
-    desc: "系统管理/用户管理",
+    desc: '系统管理/用户管理',
     sorts: 0,
     conditions: 1,
   },
   {
     id: 4,
-    title: "角色管理",
-    icon: "icon-team",
-    url: "/system/roleadmin",
+    title: '角色管理',
+    icon: 'icon-team',
+    url: '/system/roleadmin',
     parent: 2,
-    desc: "系统管理/角色管理",
+    desc: '系统管理/角色管理',
     sorts: 1,
     conditions: 1,
   },
   {
     id: 5,
-    title: "权限管理",
-    icon: "icon-safetycertificate",
-    url: "/system/poweradmin",
+    title: '权限管理',
+    icon: 'icon-safetycertificate',
+    url: '/system/poweradmin',
     parent: 2,
-    desc: "系统管理/权限管理",
+    desc: '系统管理/权限管理',
     sorts: 2,
     conditions: 1,
   },
   {
     id: 6,
-    title: "菜单管理",
-    icon: "icon-appstore",
-    url: "/system/menuadmin",
+    title: '菜单管理',
+    icon: 'icon-appstore',
+    url: '/system/menuadmin',
     parent: 2,
-    desc: "系统管理/菜单管理",
+    desc: '系统管理/菜单管理',
     sorts: 3,
+    conditions: 1,
+  },
+  {
+    id: 7,
+    title: '设备管理',
+    url: '/device',
+    icon: 'icon-desktop',
+    desc: '设备管理目录分支',
+    parent: null,
+    sorts: 1,
+    conditions: 1,
+  },
+  {
+    id: 8,
+    title: '设备视图',
+    url: '/device/view',
+    icon: 'icon-desktop',
+    desc: '设备管理目录分支',
+    parent: 7,
+    sorts: 1,
     conditions: 1,
   },
 ];
@@ -136,45 +156,45 @@ const powers = [
   {
     id: 1,
     menu: 3,
-    title: "新增",
-    code: "user:add",
-    desc: "用户管理 - 添加权限",
+    title: '新增',
+    code: 'user:add',
+    desc: '用户管理 - 添加权限',
     sorts: 1,
     conditions: 1,
   },
   {
     id: 2,
     menu: 3,
-    title: "修改",
-    code: "user:up",
-    desc: "用户管理 - 修改权限",
+    title: '修改',
+    code: 'user:up',
+    desc: '用户管理 - 修改权限',
     sorts: 2,
     conditions: 1,
   },
   {
     id: 3,
     menu: 3,
-    title: "查看",
-    code: "user:query",
-    desc: "用户管理 - 查看权限",
+    title: '查看',
+    code: 'user:query',
+    desc: '用户管理 - 查看权限',
     sorts: 3,
     conditions: 1,
   },
   {
     id: 4,
     menu: 3,
-    title: "删除",
-    code: "user:del",
-    desc: "用户管理 - 删除权限",
+    title: '删除',
+    code: 'user:del',
+    desc: '用户管理 - 删除权限',
     sorts: 4,
     conditions: 1,
   },
   {
     id: 5,
     menu: 3,
-    title: "分配角色",
-    code: "user:role",
-    desc: "用户管理 - 分配角色权限",
+    title: '分配角色',
+    code: 'user:role',
+    desc: '用户管理 - 分配角色权限',
     sorts: 5,
     conditions: 1,
   },
@@ -182,45 +202,45 @@ const powers = [
   {
     id: 6,
     menu: 4,
-    title: "新增",
-    code: "role:add",
-    desc: "角色管理 - 添加权限",
+    title: '新增',
+    code: 'role:add',
+    desc: '角色管理 - 添加权限',
     sorts: 1,
     conditions: 1,
   },
   {
     id: 7,
     menu: 4,
-    title: "修改",
-    code: "role:up",
-    desc: "角色管理 - 修改权限",
+    title: '修改',
+    code: 'role:up',
+    desc: '角色管理 - 修改权限',
     sorts: 2,
     conditions: 1,
   },
   {
     id: 8,
     menu: 4,
-    title: "查看",
-    code: "role:query",
-    desc: "角色管理 - 查看权限",
+    title: '查看',
+    code: 'role:query',
+    desc: '角色管理 - 查看权限',
     sorts: 3,
     conditions: 1,
   },
   {
     id: 18,
     menu: 4,
-    title: "分配权限",
-    code: "role:power",
-    desc: "角色管理 - 分配权限",
+    title: '分配权限',
+    code: 'role:power',
+    desc: '角色管理 - 分配权限',
     sorts: 4,
     conditions: 1,
   },
   {
     id: 9,
     menu: 4,
-    title: "删除",
-    code: "role:del",
-    desc: "角色管理 - 删除权限",
+    title: '删除',
+    code: 'role:del',
+    desc: '角色管理 - 删除权限',
     sorts: 5,
     conditions: 1,
   },
@@ -228,36 +248,36 @@ const powers = [
   {
     id: 10,
     menu: 5,
-    title: "新增",
-    code: "power:add",
-    desc: "权限管理 - 添加权限",
+    title: '新增',
+    code: 'power:add',
+    desc: '权限管理 - 添加权限',
     sorts: 1,
     conditions: 1,
   },
   {
     id: 11,
     menu: 5,
-    title: "修改",
-    code: "power:up",
-    desc: "权限管理 - 修改权限",
+    title: '修改',
+    code: 'power:up',
+    desc: '权限管理 - 修改权限',
     sorts: 2,
     conditions: 1,
   },
   {
     id: 12,
     menu: 5,
-    title: "查看",
-    code: "power:query",
-    desc: "权限管理 - 查看权限",
+    title: '查看',
+    code: 'power:query',
+    desc: '权限管理 - 查看权限',
     sorts: 3,
     conditions: 1,
   },
   {
     id: 13,
     menu: 5,
-    title: "删除",
-    code: "power:del",
-    desc: "权限管理 - 删除权限",
+    title: '删除',
+    code: 'power:del',
+    desc: '权限管理 - 删除权限',
     sorts: 2,
     conditions: 1,
   },
@@ -265,36 +285,36 @@ const powers = [
   {
     id: 14,
     menu: 6,
-    title: "新增",
-    code: "menu:add",
-    desc: "菜单管理 - 添加权限",
+    title: '新增',
+    code: 'menu:add',
+    desc: '菜单管理 - 添加权限',
     sorts: 1,
     conditions: 1,
   },
   {
     id: 15,
     menu: 6,
-    title: "修改",
-    code: "menu:up",
-    desc: "菜单管理 - 修改权限",
+    title: '修改',
+    code: 'menu:up',
+    desc: '菜单管理 - 修改权限',
     sorts: 2,
     conditions: 1,
   },
   {
     id: 16,
     menu: 6,
-    title: "查看",
-    code: "menu:query",
-    desc: "菜单管理 - 查看权限",
+    title: '查看',
+    code: 'menu:query',
+    desc: '菜单管理 - 查看权限',
     sorts: 3,
     conditions: 1,
   },
   {
     id: 17,
     menu: 6,
-    title: "删除",
-    code: "menu:del",
-    desc: "菜单管理 - 删除权限",
+    title: '删除',
+    code: 'menu:del',
+    desc: '菜单管理 - 删除权限',
     sorts: 2,
     conditions: 1,
   },
@@ -303,8 +323,8 @@ const powers = [
 const roles = [
   {
     id: 1,
-    title: "超级管理员",
-    desc: "超级管理员拥有所有权限",
+    title: '超级管理员',
+    desc: '超级管理员拥有所有权限',
     sorts: 1,
     conditions: 1,
     menuAndPowers: [
@@ -314,12 +334,14 @@ const roles = [
       { menuId: 4, powers: [6, 7, 8, 9, 18] },
       { menuId: 5, powers: [10, 11, 12, 13] },
       { menuId: 6, powers: [14, 15, 16, 17] },
+      { menuId: 7, powers: [] },
+      { menuId: 8, powers: [] },
     ],
   },
   {
     id: 2,
-    title: "普通管理员",
-    desc: "普通管理员",
+    title: '普通管理员',
+    desc: '普通管理员',
     sorts: 2,
     conditions: 1,
     menuAndPowers: [
@@ -333,8 +355,8 @@ const roles = [
   },
   {
     id: 3,
-    title: "运维人员",
-    desc: "运维人员不能删除对象",
+    title: '运维人员',
+    desc: '运维人员不能删除对象',
     sorts: 3,
     conditions: 1,
     menuAndPowers: [
@@ -371,15 +393,15 @@ const onLogin = function (p) {
     return item.username === p.username;
   });
   if (!u) {
-    return { status: 204, data: null, message: "该用户不存在" };
+    return { status: 204, data: null, message: '该用户不存在' };
   } else if (u.password !== p.password) {
-    return { status: 204, data: null, message: "密码错误" };
+    return { status: 204, data: null, message: '密码错误' };
   }
-  return { status: 200, data: u, message: "登录成功" };
+  return { status: 200, data: u, message: '登录成功' };
 };
 // 获取所有菜单
 const getMenus = function (p) {
-  return { status: 200, data: menus, message: "success" };
+  return { status: 200, data: menus, message: 'success' };
 };
 // 获取菜单（根据ID）
 const getMenusById = function (p) {
@@ -395,7 +417,7 @@ const getMenusById = function (p) {
     });
     res.push(t);
   }
-  return { status: 200, data: res, message: "success" };
+  return { status: 200, data: res, message: 'success' };
 };
 
 // 添加新菜单
@@ -403,7 +425,7 @@ const addMenu = function (p) {
   // const p = JSON.parse(request.body);
   p.id = ++id_sequence;
   menus.push(p);
-  return { status: 200, data: menus, message: "添加成功" };
+  return { status: 200, data: menus, message: '添加成功' };
 };
 // 修改菜单
 const upMenu = function (p) {
@@ -414,9 +436,9 @@ const upMenu = function (p) {
   if (oldIndex !== -1) {
     const news = Object.assign({}, menus[oldIndex], p);
     menus.splice(oldIndex, 1, news);
-    return { status: 200, data: menus, message: "success" };
+    return { status: 200, data: menus, message: 'success' };
   } else {
-    return { status: 204, data: null, message: "未找到该条数据" };
+    return { status: 204, data: null, message: '未找到该条数据' };
   }
 };
 // 删除菜单
@@ -432,12 +454,12 @@ const delMenu = function (p) {
     });
     if (haveChild === -1) {
       menus.splice(oldIndex, 1);
-      return { status: 200, data: menus, message: "success" };
+      return { status: 200, data: menus, message: 'success' };
     } else {
-      return { status: 204, data: null, message: "该菜单下有子菜单，无法删除" };
+      return { status: 204, data: null, message: '该菜单下有子菜单，无法删除' };
     }
   } else {
-    return { status: 204, data: null, message: "未找到该条数据" };
+    return { status: 204, data: null, message: '未找到该条数据' };
   }
 };
 // 根据菜单ID查询其下权限
@@ -455,10 +477,10 @@ const getPowerByMenuId = function (p) {
         .sort(function (a, b) {
           return a.sorts - b.sorts;
         }),
-      message: "success",
+      message: 'success',
     };
   } else {
-    return { status: 200, data: [], message: "success" };
+    return { status: 200, data: [], message: 'success' };
   }
 };
 // 根据权限ID查询对应的权限
@@ -475,14 +497,14 @@ const getPowerById = function (p) {
     });
     res.push(t);
   }
-  return { status: 200, data: res, message: "success" };
+  return { status: 200, data: res, message: 'success' };
 };
 // 添加权限
 const addPower = function (p) {
   // const p = JSON.parse(request.body);
   p.id = ++id_sequence;
   powers.push(p);
-  return { status: 200, data: { id: p.id }, message: "success" };
+  return { status: 200, data: { id: p.id }, message: 'success' };
 };
 // 修改权限
 const upPower = function (p) {
@@ -494,9 +516,9 @@ const upPower = function (p) {
   if (oldIndex !== -1) {
     const news = Object.assign({}, powers[oldIndex], p);
     powers.splice(oldIndex, 1, news);
-    return { status: 200, data: { id: p.id }, message: "success" };
+    return { status: 200, data: { id: p.id }, message: 'success' };
   } else {
-    return { status: 204, data: null, message: "未找到该条数据" };
+    return { status: 204, data: null, message: '未找到该条数据' };
   }
 };
 // 删除权限
@@ -507,9 +529,9 @@ const delPower = function (p) {
 
   if (oldIndex !== -1) {
     powers.splice(oldIndex, 1);
-    return { status: 200, data: null, message: "success" };
+    return { status: 200, data: null, message: 'success' };
   } else {
-    return { status: 204, data: null, message: "未找到该条数据" };
+    return { status: 204, data: null, message: '未找到该条数据' };
   }
 };
 // 查询角色（分页,条件筛选）
@@ -533,12 +555,12 @@ const getRoles = function (p) {
   return {
     status: 200,
     data: { list: res, total: map.length },
-    message: "success",
+    message: 'success',
   };
 };
 // 查询角色（所有）
 const getAllRoles = function (p) {
-  return { status: 200, data: roles, message: "success" };
+  return { status: 200, data: roles, message: 'success' };
 };
 // 查询角色（通过角色ID）
 const getRoleById = function (p) {
@@ -554,7 +576,7 @@ const getRoleById = function (p) {
     });
     res.push(t);
   }
-  return { status: 200, data: res, message: "success" };
+  return { status: 200, data: res, message: 'success' };
 };
 // 添加角色
 const addRole = function (p) {
@@ -564,7 +586,7 @@ const addRole = function (p) {
     p.menuAndPowers = [];
   }
   roles.push(p);
-  return { status: 200, data: null, message: "success" };
+  return { status: 200, data: null, message: 'success' };
 };
 // 修改角色
 const upRole = function (p) {
@@ -575,9 +597,9 @@ const upRole = function (p) {
   if (oldIndex !== -1) {
     const news = Object.assign({}, roles[oldIndex], p);
     roles.splice(oldIndex, 1, news);
-    return { status: 200, data: null, message: "success" };
+    return { status: 200, data: null, message: 'success' };
   } else {
-    return { status: 204, data: null, message: "未找到该条数据" };
+    return { status: 204, data: null, message: '未找到该条数据' };
   }
 };
 // 删除角色
@@ -588,9 +610,9 @@ const delRole = function (p) {
   });
   if (oldIndex !== -1) {
     roles.splice(oldIndex, 1);
-    return { status: 200, data: null, message: "success" };
+    return { status: 200, data: null, message: 'success' };
   } else {
-    return { status: 204, data: null, message: "未找到该条数据" };
+    return { status: 204, data: null, message: '未找到该条数据' };
   }
 };
 // 根据角色ID查询该角色所拥有的菜单和权限详细信息
@@ -614,9 +636,9 @@ const findAllPowerByRoleId = function (p) {
       });
       return _menu;
     });
-    return { status: 200, data: res, message: "success" };
+    return { status: 200, data: res, message: 'success' };
   } else {
-    return { status: 204, data: null, message: "未找到该角色" };
+    return { status: 204, data: null, message: '未找到该角色' };
   }
 };
 // 获取所有的菜单及权限数据 - 为了构建PowerTree组件
@@ -629,7 +651,7 @@ const getAllMenusAndPowers = function (p) {
     _menu.powers = _powers;
     return _menu;
   });
-  return { status: 200, data: res, message: "success" };
+  return { status: 200, data: res, message: 'success' };
 };
 // 给指定角色分配菜单和权限
 const setPowersByRoleId = function (p) {
@@ -661,9 +683,9 @@ const setPowersByRoleId = function (p) {
     });
 
     roles[oldIndex].menuAndPowers = pow;
-    return { status: 200, data: null, message: "success" };
+    return { status: 200, data: null, message: 'success' };
   } else {
-    return { status: 204, data: null, message: "未找到该条数据" };
+    return { status: 204, data: null, message: '未找到该条数据' };
   }
 };
 
@@ -698,7 +720,7 @@ const setPowersByRoleIds = function (ps) {
       roles[oldIndex].menuAndPowers = pow;
     }
   });
-  return { status: 200, data: null, message: "success" };
+  return { status: 200, data: null, message: 'success' };
 };
 
 // 条件分页查询用户列表
@@ -721,7 +743,7 @@ const getUserList = function (p) {
   return {
     status: 200,
     data: { list: res, total: map.length },
-    message: "success",
+    message: 'success',
   };
 };
 // 添加用户
@@ -729,7 +751,7 @@ const addUser = function (p) {
   // const p = JSON.parse(request.body);
   p.id = ++id_sequence;
   users.push(p);
-  return { status: 200, data: null, message: "success" };
+  return { status: 200, data: null, message: 'success' };
 };
 // 修改用户
 const upUser = function (p) {
@@ -740,9 +762,9 @@ const upUser = function (p) {
   if (oldIndex !== -1) {
     const news = Object.assign({}, users[oldIndex], p);
     users.splice(oldIndex, 1, news);
-    return { status: 200, data: null, message: "success" };
+    return { status: 200, data: null, message: 'success' };
   } else {
-    return { status: 204, data: null, message: "未找到该条数据" };
+    return { status: 204, data: null, message: '未找到该条数据' };
   }
 };
 // 删除用户
@@ -753,90 +775,87 @@ const delUser = function (p) {
   });
   if (oldIndex !== -1) {
     users.splice(oldIndex, 1);
-    return { status: 200, data: null, message: "success" };
+    return { status: 200, data: null, message: 'success' };
   } else {
-    return { status: 204, data: null, message: "未找到该条数据" };
+    return { status: 204, data: null, message: '未找到该条数据' };
   }
 };
 
 exports.mockApi = function (obj) {
   const url = obj.url;
   const body = obj.body;
-  let params = typeof body === "string" ? JSON.parse(body) : body;
+  let params = typeof body === 'string' ? JSON.parse(body) : body;
   let path = url;
 
   // 是get请求 解析参数
-  if (url.includes("?")) {
-    path = url.split("?")[0];
-    const s = url.split("?")[1].split("&"); // ['a=1','b=2']
+  if (url.includes('?')) {
+    path = url.split('?')[0];
+    const s = url.split('?')[1].split('&'); // ['a=1','b=2']
     params = {};
 
     for (let i = 0; i < s.length; i++) {
       if (s[i]) {
-        const ss = s[i].split("=");
+        const ss = s[i].split('=');
         params[ss[0]] = ss[1];
       }
     }
   }
-  if (path.includes("http")) {
-    path = path.replace(
-      globalThis.location.protocol + "//" + globalThis.location.host,
-      ""
-    );
+  if (path.includes('http')) {
+    path = path.replace(globalThis.location.protocol + '//' + globalThis.location.host, '');
   }
-  console.info("请求接口：", path, params);
+  console.info('请求接口：', path, params);
   switch (path) {
-    case "/api/login":
+    case '/api/login':
       return onLogin(params);
-    case "/api/getmenus":
+    case '/api/getmenus':
       return getMenus(params);
-    case "/api/getMenusById":
+    case '/api/getMenusById':
       return getMenusById(params);
-    case "/api/addmenu":
+    case '/api/addmenu':
       return addMenu(params);
-    case "/api/upmenu":
+    case '/api/upmenu':
       return upMenu(params);
-    case "/api/delmenu":
+    case '/api/delmenu':
       return delMenu(params);
-    case "/api/getpowerbymenuid":
+    case '/api/getpowerbymenuid':
       return getPowerByMenuId(params);
-    case "/api/getPowerById":
+    case '/api/getPowerById':
       return getPowerById(params);
-    case "/api/addpower":
+    case '/api/addpower':
       return addPower(params);
-    case "/api/uppower":
+    case '/api/uppower':
       return upPower(params);
-    case "/api/delpower":
+    case '/api/delpower':
       return delPower(params);
-    case "/api/getroles":
+    case '/api/getroles':
       return getRoles(params);
-    case "/api/getAllRoles":
+    case '/api/getAllRoles':
       return getAllRoles(params);
-    case "/api/getRoleById":
+    case '/api/getRoleById':
       return getRoleById(params);
-    case "/api/addrole":
+    case '/api/addrole':
       return addRole(params);
-    case "/api/uprole":
+    case '/api/uprole':
       return upRole(params);
-    case "/api/delrole":
+    case '/api/delrole':
       return delRole(params);
-    case "/api/findAllPowerByRoleId":
+    case '/api/findAllPowerByRoleId':
       return findAllPowerByRoleId(params);
-    case "/api/getAllMenusAndPowers":
+    case '/api/getAllMenusAndPowers':
       return getAllMenusAndPowers(params);
-    case "/api/setPowersByRoleId":
+    case '/api/setPowersByRoleId':
       return setPowersByRoleId(params);
-    case "/api/setPowersByRoleIds":
+    case '/api/setPowersByRoleIds':
       return setPowersByRoleIds(params);
-    case "/api/getUserList":
+    case '/api/getUserList':
       return getUserList(params);
-    case "/api/addUser":
+    case '/api/addUser':
       return addUser(params);
-    case "/api/upUser":
+    case '/api/upUser':
       return upUser(params);
-    case "/api/delUser":
+    case '/api/delUser':
       return delUser(params);
     default:
-      return { status: 404, data: null, message: "api not found" };
+      return { status: 404, data: null, message: 'api not found' };
   }
 };

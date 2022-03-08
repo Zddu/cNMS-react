@@ -1,47 +1,93 @@
 /** 对axios做一些配置 **/
 
-import { baseUrl } from "../config";
-import axios from "axios";
+import { baseUrl } from '../config';
+import axios, { AxiosRequestConfig, Method } from 'axios';
+import tools from './tools';
+import { merge } from 'lodash';
+import { message } from 'antd';
+const instance = axios.create({
+  baseURL: 'http://localhost:3000',
+  timeout: 10000,
+  withCredentials: false,
+});
+console.log('baseUrl', baseUrl);
 
-// 不需要下面这些mock配置，仅本地发布DEMO用
-// import Mock from "mockjs";
-// const mock = require("../../mock/app-data");
-// Mock.mock(/\/api.*/, (options: any) => {
-//   const res = mock.mockApi(options);
-//   return res;
-// });
+export type IGetData = <T>(
+  url: string,
+  params?: { [x: string]: string | number | undefined } | any,
+  options?: AxiosRequestConfig
+) => Promise<{
+  code: number;
+  message: string;
+  data: T;
+}>;
+
+export type LoadData = <T>(
+  method: Method,
+  params: RequestParams
+) => Promise<{
+  code: number;
+  message: string;
+  data: T;
+}>;
+
+export interface RequestParams {
+  url: string;
+  params?: { [x: string]: string | number | undefined } | any;
+  options?: AxiosRequestConfig;
+}
 
 /**
- * 根据不同环境设置不同的请求地址
- * 把返回值赋给axios.defaults.baseURL即可
+ * 生成请求的 URL
+ *
+ * @param method 方法名
+ * @param param1
+ * @returns
  */
-// function setBaseUrl(){
-//   switch(process.env.NODE_ENV){
-//     case 'development': return 'http://development.com';
-//     case 'test': return 'http://test.com';
-//     case 'production' : return 'https://production.com';
-//     default : return baseUrl;
-//   }
-// }
+function generateRequestUrl(method: Method, { url, params }: RequestParams) {
+  const query = {};
+  if (method === 'get') {
+    merge(query, params);
+  }
+  const converted = tools.objectToUrlParams(query);
 
-// 默认基础请求地址
-axios.defaults.baseURL = baseUrl;
-// 请求是否带上cookie
-axios.defaults.withCredentials = false;
-// 对返回的结果做处理
-axios.interceptors.response.use((response) => {
-  // const code = response?.data?.code ?? 200;
-  // 没有权限，登录超时，登出，跳转登录
-  // if (code === 3) {
-  //   message.error("登录超时，请重新登录");
-  //   sessionStorage.removeItem("userinfo");
-  //   setTimeout(() => {
-  //     window.location.href = "/";
-  //   }, 1500);
-  // } else {
-  //   return response.data;
-  // }
-  return response.data;
-});
+  if (converted) {
+    return `${url}${url.includes('?') ? '&' : '?'}${converted}`;
+  }
+
+  return url;
+}
+
+const loadData: LoadData = (method, { url, params, options }) => {
+  const realUrl = generateRequestUrl(method, { url, params, options });
+
+  const resPromise = instance({
+    url: realUrl,
+    method,
+    data: params,
+    ...(options || {}),
+  });
+
+  return new Promise((resolve, reject) => {
+    (async function () {
+      try {
+        const res = await resPromise;
+        if (Number(res.data.code) === 10000) {
+          resolve(res.data);
+        } else {
+          message.error(res.data.message);
+          reject(res.data);
+        }
+      } catch (error) {
+        message.error('服务出小差，请重试～');
+        reject(error);
+      }
+    })();
+  });
+};
+
+export const getData: IGetData = (url, params, options) => loadData('get', { url, params, options });
+export const postData: IGetData = (url, params, options) => loadData('post', { url, params, options });
+export const putData: IGetData = (url, params, options) => loadData('put', { url, params, options });
 
 export default axios;

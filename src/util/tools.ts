@@ -25,7 +25,7 @@ const tools = {
    */
   trim(str: string): string {
     const reg = /^\s*|\s*$/g;
-    return str.replace(reg, "");
+    return str.replace(reg, '');
   },
 
   /**
@@ -48,13 +48,13 @@ const tools = {
       return 6;
     })();
     const start = Math.floor((lenth - howmuch) / 2);
-    const ret = s.split("").map((v, i) => {
+    const ret = s.split('').map((v, i) => {
       if (i >= start && i < start + howmuch) {
-        return "*";
+        return '*';
       }
       return v;
     });
-    return ret.join("");
+    return ret.join('');
   },
 
   /**
@@ -64,7 +64,7 @@ const tools = {
    * @param str - 待处理的字符串
    * **/
   checkStr(str: string): boolean {
-    if (str === "") {
+    if (str === '') {
       return true;
     }
     const rex = /^[_a-zA-Z0-9]+$/;
@@ -99,8 +99,7 @@ const tools = {
    * @param str - 待处理的字符串
    * **/
   checkEmail(str: string): boolean {
-    const rex =
-      /^[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*\.[a-z]{2,}$/;
+    const rex = /^[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*\.[a-z]{2,}$/;
     return rex.test(str);
   },
 
@@ -137,12 +136,32 @@ const tools = {
    * **/
   clearNull<T>(obj: T): T {
     const temp: T = { ...obj };
-    Object.keys(temp).forEach((key) => {
+    Object.keys(temp).forEach(key => {
       if (temp[key] !== 0 && !temp[key]) {
         delete temp[key];
       }
     });
     return temp;
+  },
+
+  /**
+   * 对象转换为url参数,对象中的undefined将被删除
+   * 返回实例aaa=1&bbb=2
+   */
+  objectToUrlParams(paramsData?: { [x: string]: string | boolean | number | undefined }) {
+    if (!paramsData) {
+      return '';
+    }
+    let ret = '';
+    for (const key in paramsData) {
+      if (Object.prototype.hasOwnProperty.call(paramsData, key)) {
+        const element = paramsData[key];
+        if (element !== undefined) {
+          ret += `${key}=${String(element)}&`;
+        }
+      }
+    }
+    return ret.substr(0, ret.length - 1);
   },
 };
 
