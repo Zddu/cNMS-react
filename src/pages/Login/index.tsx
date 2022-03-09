@@ -99,11 +99,12 @@ function LoginContainer(props: Props): JSX.Element {
       }
 
       userBasicInfo = res1.data;
-
+      console.log('userBasicInfo', userBasicInfo);
       /** 2.根据角色id获取角色信息 (角色信息中有该角色拥有的菜单id和权限id) **/
       const res2 = await dispatch.sys.getRoleById({
         id: (userBasicInfo as UserBasicInfo).roles,
       });
+      console.log('res2', res2);
       if (!res2 || res2.status !== 200) {
         // 角色查询失败
         return res2;
@@ -143,6 +144,7 @@ function LoginContainer(props: Props): JSX.Element {
       const values = await form.validateFields();
       setLoading(true);
       const res = await loginIn(values.username, values.password);
+      console.log('res', res);
       if (res && res.status === 200) {
         message.success('登录成功');
         if (rememberPassword) {

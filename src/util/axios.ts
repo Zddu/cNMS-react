@@ -85,6 +85,9 @@ const loadData: LoadData = (method, { url, params, options }) => {
     })();
   });
 };
+axios.interceptors.response.use(response => {
+  return response.data;
+});
 
 export const getData: IGetData = (url, params, options) => loadData('get', { url, params, options });
 export const postData: IGetData = (url, params, options) => loadData('post', { url, params, options });
