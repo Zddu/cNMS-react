@@ -33,7 +33,7 @@ const { Content } = Layout;
 // ==================
 // 异步加载各路由模块
 // ==================
-const [NotFound, NoPower, Home, MenuAdmin, PowerAdmin, RoleAdmin, UserAdmin] = [
+const [NotFound, NoPower, Home, MenuAdmin, PowerAdmin, RoleAdmin, UserAdmin, DeviceView] = [
   () => import(`../pages/ErrorPages/404`),
   () => import(`../pages/ErrorPages/401`),
   () => import(`../pages/Home`),
@@ -41,6 +41,7 @@ const [NotFound, NoPower, Home, MenuAdmin, PowerAdmin, RoleAdmin, UserAdmin] = [
   () => import(`../pages/System/PowerAdmin`),
   () => import(`../pages/System/RoleAdmin`),
   () => import(`../pages/System/UserAdmin`),
+  () => import(`../pages/Device/DeviceView`),
 ].map(item => {
   return loadable(item as any, {
     fallback: <Loading />,
@@ -53,7 +54,6 @@ const [NotFound, NoPower, Home, MenuAdmin, PowerAdmin, RoleAdmin, UserAdmin] = [
 import { RootState, Dispatch } from '@/store';
 import { Menu } from '@/models/index.type';
 import { History } from 'history';
-import DeviceView from '@/pages/Device/DeviceView';
 
 type Props = {
   history: History;

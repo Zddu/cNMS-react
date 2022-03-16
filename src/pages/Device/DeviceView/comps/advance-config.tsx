@@ -5,7 +5,7 @@ const { Option } = Select;
 
 const AdvanceConfig: FC<PollType> = ({ enabled, poll_item }) => {
   return (
-    <>
+    <div key="advance-config">
       <Divider orientation="left" plain>
         轮询配置
       </Divider>
@@ -134,7 +134,7 @@ const AdvanceConfig: FC<PollType> = ({ enabled, poll_item }) => {
           </Form.Item>
         </Col>
       </Row>
-    </>
+    </div>
   );
 };
 

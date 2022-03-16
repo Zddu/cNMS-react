@@ -4,7 +4,7 @@ const { Option } = Select;
 
 const BasicConfig = () => {
   return (
-    <>
+    <div key="basic-config">
       <Divider orientation="left" plain>
         设备基本信息
       </Divider>
@@ -32,14 +32,14 @@ const BasicConfig = () => {
         </Col>
         <Col span={12}>
           <Form.Item tooltip="默认为161" label="port" name="port">
-            <Input />
+            <Input defaultValue={161} />
           </Form.Item>
         </Col>
       </Row>
       <Row gutter={16}>
         <Col span={12}>
           <Form.Item tooltip="默认为162" label="trap port" name="trap_port">
-            <Input />
+            <Input defaultValue={162} />
           </Form.Item>
         </Col>
         <Col span={12}>
@@ -72,7 +72,7 @@ const BasicConfig = () => {
           </Form.Item>
         </Col>
       </Row>
-    </>
+    </div>
   );
 };
 

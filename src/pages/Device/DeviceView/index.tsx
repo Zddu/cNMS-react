@@ -1,108 +1,154 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './index.less';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import DirectoryTree from 'antd/lib/tree/DirectoryTree';
-import { getAllDevice, getDefaultConfig, PollType } from '@/api/device/device';
-import { Button, Col, Divider, Form, FormInstance, Input, Modal, Row, Select, Steps, Switch } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
-import { DEVICE_TYPE, TableListItem, treeData } from './index.type';
+import { addDevice, getAllDevice, getDefaultConfig, getDevice, GetDeviceInfoProps, GetDevicesProps, PollType } from '@/api/device/device';
+import { Button, Drawer, Form, FormInstance, Modal, Steps } from 'antd';
+import { PlusOutlined, LineChartOutlined, CodeOutlined, FormOutlined } from '@ant-design/icons';
+import { CurrentDeviceProps, DeviceInfoProps, DeviceProps, DEVICE_TYPE, OS_MAP, TableListItem, treeData } from './index.type';
 import AdvanceConfig from './comps/advance-config';
 import BasicConfig from './comps/basic-config';
-const { Option } = Select;
+import { merge } from 'lodash';
+import DeviceInfo from './comps/device-info';
 const { Step } = Steps;
-
-const columns: ProColumns<TableListItem>[] = [
-  {
-    title: '序号',
-    dataIndex: 'index',
-    valueType: 'index',
-    key: 'index',
-    width: 60,
-    hideInSearch: true,
-  },
-  {
-    title: '别名',
-    dataIndex: 'alias_name',
-  },
-  {
-    title: '主机名称',
-    dataIndex: 'hostname',
-    render: (text: string) => <a href="#">{text}</a>,
-    hideInSearch: true,
-  },
-  {
-    title: 'IP地址',
-    dataIndex: 'ip',
-  },
-  {
-    title: '系统',
-    dataIndex: 'os',
-  },
-  {
-    title: '类型',
-    dataIndex: 'type',
-    valueEnum: DEVICE_TYPE,
-  },
-  {
-    title: '运行时长',
-    dataIndex: 'uptime',
-    hideInSearch: true,
-  },
-
-  {
-    title: '更新时间',
-    dataIndex: 'last_polled',
-    valueType: 'dateTime',
-    hideInSearch: true,
-  },
-];
 
 const steps = [
   {
     title: '基本配置',
-    content: () => <BasicConfig />,
+    content: () => <BasicConfig key="basic" />,
   },
   {
     title: '高级配置',
-    content: (config: PollType) => <AdvanceConfig {...config} />,
+    content: (config: PollType) => <AdvanceConfig key="advance" {...config} />,
   },
 ];
 
 const DeviceView = () => {
-  const [key, setKey] = useState('1');
   const [current, setCurrent] = useState(0);
   const [visible, setVisible] = useState(false);
-  const [config, setConfig] = useState<PollType>();
+  const [defaultConfig, setDefaultConfig] = useState<PollType>();
+  const [deviceInfo, setDeviceInfo] = useState<DeviceInfoProps>();
+  const [params, setParams] = useState<GetDevicesProps>();
+  const [open, setOpen] = useState(false);
+  const [currDevice, setCurrDevice] = useState<CurrentDeviceProps>();
   const formRef = useRef<FormInstance>(null);
-  const onSelect = (keys: React.Key[]) => {
-    setKey(keys[0] as string);
+  const columns: ProColumns<TableListItem>[] = [
+    {
+      title: '序号',
+      dataIndex: 'index',
+      valueType: 'index',
+      key: 'index',
+      width: 60,
+      hideInSearch: true,
+    },
+    {
+      title: '别名',
+      dataIndex: 'alias_name',
+    },
+    {
+      title: '主机名称',
+      dataIndex: 'hostname',
+      render: (text: string) => <a href="#">{text}</a>,
+      hideInSearch: true,
+    },
+    {
+      title: 'IP地址',
+      dataIndex: 'ip',
+    },
+    {
+      title: '系统',
+      dataIndex: 'os',
+      valueEnum: OS_MAP,
+    },
+    {
+      title: '类型',
+      dataIndex: 'type',
+      valueEnum: DEVICE_TYPE,
+    },
+    {
+      title: '运行时长',
+      dataIndex: 'uptime',
+      hideInSearch: true,
+    },
+
+    {
+      title: '更新时间',
+      dataIndex: 'last_polled',
+      valueType: 'dateTime',
+      hideInSearch: true,
+    },
+    {
+      title: '操作',
+      key: 'option',
+      width: 120,
+      valueType: 'option',
+      render: (_, record) => [
+        <a key="edit">
+          <FormOutlined />
+        </a>,
+        <a
+          key="monitor"
+          onClick={() => {
+            setOpen(true);
+            setCurrDevice(record as unknown as DeviceProps);
+          }}
+        >
+          <LineChartOutlined />
+        </a>,
+        <a key="login">
+          <CodeOutlined />
+        </a>,
+      ],
+    },
+  ];
+  const onSelect = (_: any, { node }: any) => {
+    setParams({ ...params, type: node.type });
+  };
+
+  const request = async (param: GetDevicesProps) => {
+    const { data }: any = await getAllDevice(param);
+    return {
+      success: true,
+      data: data,
+    };
   };
 
   const next = () => {
-    const deviceInfo = formRef.current?.getFieldsValue();
-    console.log('device', deviceInfo);
-
+    const dInfo: DeviceProps = formRef.current?.getFieldsValue();
+    setDeviceInfo({ ...deviceInfo, device: dInfo });
     setCurrent(current + 1);
   };
 
   const prev = () => {
     setCurrent(current - 1);
   };
+  const loadConfig = async () => {
+    const { data } = await getDefaultConfig();
+    setDefaultConfig(data.poll);
+  };
 
   useEffect(() => {
-    const loadConfig = async () => {
-      const { data } = await getDefaultConfig();
-      setConfig(data.poll);
-    };
     loadConfig();
   }, []);
+
+  useEffect(() => {
+    if (open) {
+      const loadDevice = async () => {
+        const { data }: { data: GetDeviceInfoProps } = await getDevice(currDevice?.device_id as string);
+        console.log(data);
+        setCurrDevice({ ...merge(currDevice, data) });
+      };
+      loadDevice();
+    }
+  }, [open]);
 
   return (
     <div className="device-view">
       <ProTable<TableListItem>
         columns={columns}
         rowKey="device_id"
+        params={params}
         pagination={{
           showSizeChanger: true,
         }}
@@ -114,9 +160,6 @@ const DeviceView = () => {
             <div className="device-table">{dom}</div>
           </div>
         )}
-        params={{
-          key,
-        }}
         toolBarRender={() => [
           <Button
             key="primary"
@@ -129,14 +172,7 @@ const DeviceView = () => {
             添加新设备
           </Button>,
         ]}
-        request={async param => {
-          console.log('param', param);
-          const { data }: any = await getAllDevice();
-          return {
-            success: true,
-            data: data,
-          };
-        }}
+        request={request}
         dateFormatter="string"
       />
 
@@ -174,23 +210,28 @@ const DeviceView = () => {
                 htmlType="submit"
                 key="submit"
                 type="primary"
-                onClick={() => {
+                onClick={async () => {
                   const deviceConfig: any = {};
                   const config = formRef.current?.getFieldsValue();
-                  console.log('提交', config);
+                  deviceConfig['poll'] = {
+                    enabled: config['poll-enabled'],
+                  };
+                  delete config['poll-enabled'];
+                  const pollItem = (deviceConfig['poll']['poll_item'] = {});
                   Object.keys(config).forEach(k => {
                     const key1 = k.split('-')[0];
                     const key2 = k.split('-')[1];
-                    if (deviceConfig[key1]) {
-                      deviceConfig[key1][key2] = config[k];
+                    if (pollItem[key1]) {
+                      pollItem[key1][key2] = config[k];
                     } else {
-                      deviceConfig[key1] = {
+                      pollItem[key1] = {
                         [key2]: config[k],
                       };
                     }
                   });
-                  console.log(deviceConfig);
-
+                  const mergeInfo = merge({ config: { poll: defaultConfig } }, { ...deviceInfo, config: deviceConfig });
+                  await addDevice(mergeInfo);
+                  setParams({ current: 1, pageSize: 20 });
                   setVisible(false);
                 }}
               >
@@ -207,10 +248,22 @@ const DeviceView = () => {
             ))}
           </Steps>
           <Form className="advance-config" labelCol={{ span: 8 }} wrapperCol={{ span: 12 }} name="add-device" ref={formRef} autoComplete="off">
-            {steps[current].content(config as PollType)}
+            {steps[current].content(defaultConfig as PollType)}
           </Form>
         </div>
       </Modal>
+
+      <Drawer
+        size="large"
+        onClose={() => {
+          setOpen(false);
+        }}
+        title={`${currDevice?.hostname}-${currDevice?.ip}`}
+        placement="right"
+        visible={open}
+      >
+        <DeviceInfo className="device-info" deviceInfo={currDevice || ({} as CurrentDeviceProps)} />
+      </Drawer>
     </div>
   );
 };
