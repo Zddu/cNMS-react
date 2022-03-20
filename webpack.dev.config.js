@@ -28,7 +28,11 @@ module.exports = {
   },
   devServer: {
     proxy: {
-      '^/cool': 'http://localhost:3000',
+      '^/cool': {
+        target: 'http://localhost:3000',
+        secure: false,
+        changeOrigin: true,
+      },
     },
   },
   module: {

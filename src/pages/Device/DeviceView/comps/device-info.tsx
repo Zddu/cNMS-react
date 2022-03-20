@@ -1,7 +1,9 @@
+import SSH from '@/components/SSH';
 import { Card } from 'antd';
 import React, { FC, useEffect } from 'react';
 import { CurrentDeviceProps } from '../index.type';
 import CpuChart from './cpu-chart';
+import MemChart from './mem-chart';
 
 interface DeviceInfoProps {
   className?: string;
@@ -39,6 +41,7 @@ const DeviceInfo: FC<DeviceInfoProps> = ({ className, deviceInfo }) => {
         </p>
       </Card>
       <CpuChart deviceId={deviceInfo.device_id || ''} cpuData={deviceInfo.cpu || []} />
+      <MemChart deviceId={deviceInfo.device_id || ''} memData={deviceInfo.mem || []} />
     </div>
   );
 };

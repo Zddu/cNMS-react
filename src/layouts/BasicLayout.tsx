@@ -108,6 +108,10 @@ function BasicLayoutCom(props: Props): JSX.Element {
       if (checkRouterPower(props.location.pathname)) {
         return <Component {...props} />;
       }
+      console.log('props.location.pathname', props.location.pathname);
+      if (props.location.pathname === '/device/ssh') {
+        return <Component {...props} />;
+      }
       return <Redirect to="/nopower" />;
     },
     [checkRouterPower]

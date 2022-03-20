@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { useRef, useState } from 'react';
 import * as echarts from 'echarts';
-import { CPU, getCpu } from '@/api/device/device';
+import { getMem, Memory } from '@/api/device/device';
 import dayjs from 'dayjs';
 import BasicChart from '@/components/BasicChart';
 type EChartsOption = echarts.EChartsOption;
@@ -10,21 +10,21 @@ interface DataItem {
   value: [string, number];
 }
 
-export interface CpuChartProps {
-  cpuData: CPU[];
+export interface memChartProps {
+  memData: Memory[];
   deviceId: string;
 }
 
-const CpuChart: FC<CpuChartProps> = ({ cpuData, deviceId }) => {
+const MemChart: FC<memChartProps> = ({ memData, deviceId }) => {
   const [option, setOption] = useState<EChartsOption>();
-  const lastData = cpuData.slice(cpuData.length - 20, cpuData.length).map(({ cpu_rate, last_polled }) => ({
-    value: [last_polled, Number(cpu_rate)],
+  const lastData = memData.slice(memData.length - 20, memData.length).map(({ mem_usage, last_polled }) => ({
+    value: [last_polled, Number(mem_usage)],
   }));
-  const cpuChart = useRef<echarts.EChartsType>();
+  const memChart = useRef<echarts.EChartsType>();
   const init = () => {
     setOption({
       title: {
-        subtext: 'CPU使用率',
+        subtext: '内存使用率',
         top: '0',
         left: '0',
       },
@@ -33,7 +33,7 @@ const CpuChart: FC<CpuChartProps> = ({ cpuData, deviceId }) => {
         trigger: 'axis',
         formatter: function (params: any) {
           params = params[0];
-          return 'CPU使用率: ' + params.value[1] + '% <br /> 时间: ' + dayjs(params.value[0]).format('HH:mm');
+          return '内存使用率: ' + params.value[1] + '% <br /> 时间: ' + dayjs(params.value[0]).format('HH:mm');
         },
         axisPointer: {
           animation: false,
@@ -67,18 +67,18 @@ const CpuChart: FC<CpuChartProps> = ({ cpuData, deviceId }) => {
     let timer: NodeJS.Timer;
     if (lastData) {
       init();
-      const cpuNewData = lastData.slice();
+      const memNewData = lastData.slice();
       timer = setInterval(async function () {
-        const { data: cpu } = await getCpu(deviceId);
+        const { data: mem } = await getMem(deviceId);
 
-        if (cpuNewData.length > 0 && cpuNewData[cpuNewData.length - 1].value[0] !== cpu.last_polled) {
-          cpuNewData.shift();
-          cpuNewData.push({ value: [cpu.last_polled, Number(cpu.cpu_rate)] });
-          if (cpuChart.current) {
-            cpuChart.current.setOption({
+        if (memNewData.length > 0 && memNewData[memNewData.length - 1].value[0] !== mem.last_polled) {
+          memNewData.shift();
+          memNewData.push({ value: [mem.last_polled, Number(mem.mem_usage)] });
+          if (memChart.current) {
+            memChart.current.setOption({
               series: [
                 {
-                  data: cpuNewData,
+                  data: memNewData,
                 },
               ],
             });
@@ -89,8 +89,8 @@ const CpuChart: FC<CpuChartProps> = ({ cpuData, deviceId }) => {
     return () => {
       clearInterval(timer);
     };
-  }, [cpuData]);
-  return <BasicChart options={option} basicInstance={cpuChart} />;
+  }, [memData]);
+  return <BasicChart options={option} basicInstance={memChart} />;
 };
 
-export default CpuChart;
+export default MemChart;

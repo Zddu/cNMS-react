@@ -163,6 +163,27 @@ const tools = {
     }
     return ret.substr(0, ret.length - 1);
   },
+
+  urlParamsToObject(url: string): { [key: string]: string | number | boolean | undefined } {
+    if (!url) {
+      return {};
+    }
+
+    let paramsStr = url;
+
+    if (url.includes('?')) {
+      paramsStr = url.split('?')[1];
+    }
+
+    const searchParams = new URLSearchParams(paramsStr);
+
+    const objParams: { [x: string]: string | number } = {};
+    searchParams.forEach((value, key) => {
+      objParams[key] = value;
+    });
+
+    return objParams;
+  },
 };
 
 export default tools;

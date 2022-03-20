@@ -87,6 +87,13 @@ export interface GetDeviceInfoProps {
   interface: Interface[];
 }
 
+export interface PostSSHConfig {
+  device_id: string;
+  username?: string;
+  password: string;
+  port?: number;
+}
+
 export const getAllDevice = (params: GetDevicesProps) => getData('/cool/devices', params);
 
 export const getDefaultConfig = () => getData<ConfigProps>('/cool/device/default_config');
@@ -95,3 +102,7 @@ export const addDevice = (device: any) => postData('/cool/devices', device);
 export const getDevice = (device_id: string) => getData<GetDeviceInfoProps>('/cool/device/info', { device_id });
 
 export const getCpu = (device_id: string) => getData<CPU>('/cool/cpu/info', { device_id });
+export const getMem = (device_id: string) => getData<Memory>('/cool/mem/info', { device_id });
+
+export const postSSHConfig = (config: PostSSHConfig) => postData('/cool/ssh/info', config);
+export const getSSH = (device_id: string, ip: string) => getData<PostSSHConfig>('/cool/ssh/info', { device_id, ip });

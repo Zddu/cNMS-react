@@ -96,7 +96,15 @@ const DeviceView = () => {
         >
           <LineChartOutlined />
         </a>,
-        <a key="login">
+        <a
+          key="login"
+          onClick={() => {
+            const device = record as unknown as DeviceProps;
+            console.log('window.location.origin', window.location.origin);
+            const features = 'height=700, width=1200,top=100, left=100';
+            window.open(window.location.origin + `/#/ssh?host=${device.ip}&device_id=${device.device_id}`, `${device.hostname}-${device.ip}`, features);
+          }}
+        >
           <CodeOutlined />
         </a>,
       ],
