@@ -3,6 +3,7 @@ import './index.less';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
+import { message } from 'antd';
 require('xterm/css/xterm.css');
 
 interface SSHProps {
@@ -27,12 +28,13 @@ const SSH: FC<SSHProps> = ({ sshConfig, reAuth }) => {
       terminal.options.tabStopWidth = 8;
       terminal.options.bellStyle = 'sound';
       terminal.onKey(({ domEvent }) => {
-        // const code = key.charCodeAt(0);
-        if (domEvent.code == 'Backspace') {
-          //Backspace
-          terminal.write('\b \b');
+        if (domEvent.code == 'Backspace' && (terminal as any)._core.buffer.x > 22) {
+          terminal.write('\b');
         }
       });
+      // (terminal as any).prompt = () => {
+      //   terminal.write('\r\n$ ');
+      // };
     }
   }, [termRef]);
 
@@ -76,8 +78,15 @@ const SSH: FC<SSHProps> = ({ sshConfig, reAuth }) => {
     switch (wsData.event) {
       case 'reauth':
         reAuth?.(true);
+        break;
       case 'data':
         terminal.write(wsData.data);
+        break;
+      case 'error':
+        message.error(wsData.data);
+        break;
+      default:
+        message.info(wsData.data);
     }
   }
   return <div className="terminal" ref={termRef}></div>;
