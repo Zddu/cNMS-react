@@ -33,7 +33,7 @@ const { Content } = Layout;
 // ==================
 // 异步加载各路由模块
 // ==================
-const [NotFound, NoPower, Home, MenuAdmin, PowerAdmin, RoleAdmin, UserAdmin, DeviceView] = [
+const [NotFound, NoPower, Home, MenuAdmin, PowerAdmin, RoleAdmin, UserAdmin, DeviceView, DeviceQuality, MonitorItem] = [
   () => import(`../pages/ErrorPages/404`),
   () => import(`../pages/ErrorPages/401`),
   () => import(`../pages/Home`),
@@ -42,6 +42,8 @@ const [NotFound, NoPower, Home, MenuAdmin, PowerAdmin, RoleAdmin, UserAdmin, Dev
   () => import(`../pages/System/RoleAdmin`),
   () => import(`../pages/System/UserAdmin`),
   () => import(`../pages/Device/DeviceView`),
+  () => import(`../pages/Device/DeviceQuality`),
+  () => import(`../pages/Monitor/MonitorItem`),
 ].map(item => {
   return loadable(item as any, {
     fallback: <Loading />,
@@ -109,9 +111,6 @@ function BasicLayoutCom(props: Props): JSX.Element {
         return <Component {...props} />;
       }
       console.log('props.location.pathname', props.location.pathname);
-      if (props.location.pathname === '/device/ssh') {
-        return <Component {...props} />;
-      }
       return <Redirect to="/nopower" />;
     },
     [checkRouterPower]
@@ -143,6 +142,8 @@ function BasicLayoutCom(props: Props): JSX.Element {
               {/*<!-- 使用CacheRoute可以缓存该页面，类似Keep-alive -->*/}
               <CacheRoute exact path="/system/useradmin" render={props => onEnter(UserAdmin, props)} />
               <Route exact path="/device/view" render={props => onEnter(DeviceView, props)} />
+              <Route exact path="/device/quality" render={props => onEnter(DeviceQuality, props)} />
+              <Route exact path="/monitor/item" render={props => onEnter(MonitorItem, props)} />
               <Route exact path="/nopower" component={NoPower} />
               <Route component={NotFound} />
             </CacheSwitch>

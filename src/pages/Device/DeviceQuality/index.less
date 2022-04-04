@@ -1,0 +1,125 @@
+.device-quality {
+  .basic {
+    &-wrapper {
+      background: #f3f3f3;
+      padding: 12px;
+    }
+    &-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+
+  .ul-list {
+    display: flex;
+    flex-wrap: wrap;
+    line-height: 40px;
+    justify-content: space-between;
+    padding-left: 16px;
+    list-style: none;
+    font-size: 16px;
+
+    li {
+      position: relative;
+      width: 30%;
+      display: inline-block;
+    }
+
+    li:before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      display: inline-block;
+      border-radius: 50%;
+      background: #4f8eff;
+      vertical-align: middle;
+      margin-right: 14px;
+      position: absolute;
+      left: -13px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  .management {
+    width: 100%;
+
+    .management-wrapper {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 12px;
+
+      .management-item-wrapper {
+        background: #f3f3f3;
+        padding: 12px;
+        flex: 1;
+        margin-right: 12px;
+
+        &:last-child {
+          margin: 0;
+        }
+
+        .management-item {
+          li {
+            display: block;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  .quality {
+    &-item {
+      position: relative;
+      background: #f3f3f3;
+      margin-right: 12px;
+      .title {
+        position: absolute;
+        left: 20px;
+        top: 10px;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .item-text {
+        position: absolute;
+        right: 8%;
+        top: 10%;
+        font-size: 16px;
+        line-height: 30px;
+        list-style: none;
+
+        li {
+          position: relative;
+        }
+
+        li:before {
+          content: '';
+          width: 12px;
+          height: 6px;
+          display: inline-block;
+          border-radius: 20%;
+          background: #4f8eff;
+          vertical-align: middle;
+          margin-right: 14px;
+          position: absolute;
+          left: -15px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .adapter,
+  .services {
+    .title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+}

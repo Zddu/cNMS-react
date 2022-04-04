@@ -51,6 +51,7 @@ export interface DeviceProps {
   ssh_password?: string;
   tel_password?: string;
   hostname?: string;
+  type?: string;
 }
 
 export interface DeviceInfoProps {
