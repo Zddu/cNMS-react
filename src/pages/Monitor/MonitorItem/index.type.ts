@@ -61,3 +61,22 @@ export const SlientList = [
     value: 1440,
   },
 ];
+export type MonitorItem = {
+  key: number;
+  monitor_name: string;
+  monitor_type: number;
+  monitor_frequency: string;
+  monitor_status: string;
+  monitor_health: number;
+  create_time: Date;
+};
+
+export const layout = {
+  labelCol: { span: 6 },
+  wrapperCol: { span: 12 },
+};
+export const tailLayout = {
+  wrapperCol: { offset: 6, span: 16 },
+};
+
+export const interfaceList = ['monitor_interface', 'monitor_inflow', 'monitor_outflow', 'monitor_in_discards', 'monitor_out_discards', 'monitor_in_errors', 'monitor_out_errors'];
