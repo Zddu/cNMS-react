@@ -33,7 +33,7 @@ const { Content } = Layout;
 // ==================
 // 异步加载各路由模块
 // ==================
-const [NotFound, NoPower, Home, MenuAdmin, PowerAdmin, RoleAdmin, UserAdmin, DeviceView, DeviceQuality, MonitorItem] = [
+const [NotFound, NoPower, Home, MenuAdmin, PowerAdmin, RoleAdmin, UserAdmin, DeviceView, DeviceQuality, MonitorItem, AlarmHistory, AlarmContacts, AlarmGroup] = [
   () => import(`../pages/ErrorPages/404`),
   () => import(`../pages/ErrorPages/401`),
   () => import(`../pages/Home`),
@@ -44,6 +44,9 @@ const [NotFound, NoPower, Home, MenuAdmin, PowerAdmin, RoleAdmin, UserAdmin, Dev
   () => import(`../pages/Device/DeviceView`),
   () => import(`../pages/Device/DeviceQuality`),
   () => import(`../pages/Monitor/MonitorItem`),
+  () => import(`../pages/Alarm/AlarmHistory`),
+  () => import(`../pages/Alarm/AlarmContacts`),
+  () => import(`../pages/Alarm/AlarmGroup`),
 ].map(item => {
   return loadable(item as any, {
     fallback: <Loading />,
@@ -144,6 +147,9 @@ function BasicLayoutCom(props: Props): JSX.Element {
               <Route exact path="/device/view" render={props => onEnter(DeviceView, props)} />
               <Route exact path="/device/quality" render={props => onEnter(DeviceQuality, props)} />
               <Route exact path="/monitor/item" render={props => onEnter(MonitorItem, props)} />
+              <Route exact path="/alarm/contacts" render={props => onEnter(AlarmContacts, props)} />
+              <Route exact path="/alarm/history" render={props => onEnter(AlarmHistory, props)} />
+              <Route exact path="/alarm/group" render={props => onEnter(AlarmGroup, props)} />
               <Route exact path="/nopower" component={NoPower} />
               <Route component={NotFound} />
             </CacheSwitch>
