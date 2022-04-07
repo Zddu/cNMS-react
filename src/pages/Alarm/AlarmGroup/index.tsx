@@ -1,7 +1,7 @@
 /*
  * @Author: zengyan.zdde@bytedance.com
  * @Date: 2022-04-06 10:22:48
- * @LastEditTime: 2022-04-06 20:50:32
+ * @LastEditTime: 2022-04-07 14:46:11
  * @LastEditors: zengyan.zdde@bytedance.com
  * @Description:
  * @FilePath: /cool-network-system-react/src/pages/Alarm/AlarmGroup/index.tsx
@@ -12,7 +12,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import { AlarmGroupItem } from './index.types';
 import TextArea from 'antd/lib/input/TextArea';
-import { createGroup, getContacts, GetContactsProps } from '@/api/monitor/monitor';
+import { createGroup, getContacts, GetContactsProps, getGroups, GetGroupsProps } from '@/api/monitor/monitor';
 
 const columns: ProColumns<AlarmGroupItem>[] = [
   {
@@ -28,7 +28,7 @@ const columns: ProColumns<AlarmGroupItem>[] = [
     render: (_, record) => (
       <>
         {record.group_contacts.map(item => (
-          <>{`${item} `}</>
+          <>{`${item.contact_name} `}</>
         ))}
       </>
     ),
@@ -49,12 +49,21 @@ const columns: ProColumns<AlarmGroupItem>[] = [
 const AlarmGroup = () => {
   const [openCreateModal, setOpen] = useState(false);
   const [form] = Form.useForm();
+  const [params, setParams] = useState<Partial<GetGroupsProps>>();
   const [targetKeys, setTargetKeys] = useState<string[]>();
   const [contacts, setContacts] = useState<Partial<GetContactsProps>[]>();
 
   useEffect(() => {
     loadContactsData();
   }, []);
+
+  const request = async (param: GetGroupsProps) => {
+    const { data }: any = await getGroups(param);
+    return {
+      success: true,
+      data: data,
+    };
+  };
 
   const loadContactsData = async () => {
     const { data } = await getContacts({ current: 1, pageSize: 20 });
@@ -66,20 +75,8 @@ const AlarmGroup = () => {
       <ProTable<AlarmGroupItem>
         headerTitle="告警联系组"
         columns={columns}
-        request={params => {
-          console.log('-->', params);
-          return Promise.resolve({
-            data: [
-              {
-                group_id: 1,
-                group_name: '运维小队1',
-                group_contacts: ['张三'],
-                group_description: '12345566772',
-              },
-            ],
-            success: true,
-          });
-        }}
+        request={request}
+        params={params}
         toolBarRender={() => [
           <Button
             key="button"
@@ -110,7 +107,7 @@ const AlarmGroup = () => {
           }
           console.log('ok', fields);
           await createGroup(fields);
-
+          setParams({ current: 1, pageSize: 20 });
           setOpen(false);
         }}
         onCancel={() => {
