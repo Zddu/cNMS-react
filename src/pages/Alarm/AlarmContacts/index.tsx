@@ -1,17 +1,9 @@
-/*
- * @Author: zengyan.zdde@bytedance.com
- * @Date: 2022-04-06 10:22:48
- * @LastEditTime: 2022-04-07 14:45:36
- * @LastEditors: zengyan.zdde@bytedance.com
- * @Description:
- * @FilePath: /cool-network-system-react/src/pages/Alarm/AlarmContacts/index.tsx
- */
 import ProTable, { ProColumns } from '@ant-design/pro-table';
 import { Button, Form, Input, message, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { AlarmContactsItem } from './index.types';
-import { createContacts, getContacts, GetContactsProps } from "@/api/monitor/monitor";
+import { createContacts, getContacts, GetContactsProps } from '@/api/monitor/monitor';
 
 const columns: ProColumns<AlarmContactsItem>[] = [
   {

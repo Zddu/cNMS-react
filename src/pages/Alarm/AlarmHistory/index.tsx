@@ -1,11 +1,3 @@
-/*
- * @Author: zengyan.zdde@bytedance.com
- * @Date: 2022-04-06 10:22:48
- * @LastEditTime: 2022-04-06 13:42:59
- * @LastEditors: zengyan.zdde@bytedance.com
- * @Description:
- * @FilePath: /cool-network-system-react/src/pages/Alarm/AlarmHistory/index.tsx
- */
 import ProTable, { ProColumns } from '@ant-design/pro-table';
 import React from 'react';
 import { AlarmHistoryItem } from './index.types';

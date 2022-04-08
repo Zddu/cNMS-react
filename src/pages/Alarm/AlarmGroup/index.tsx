@@ -1,11 +1,3 @@
-/*
- * @Author: zengyan.zdde@bytedance.com
- * @Date: 2022-04-06 10:22:48
- * @LastEditTime: 2022-04-07 14:46:11
- * @LastEditors: zengyan.zdde@bytedance.com
- * @Description:
- * @FilePath: /cool-network-system-react/src/pages/Alarm/AlarmGroup/index.tsx
- */
 import ProTable, { ProColumns } from '@ant-design/pro-table';
 import { Button, Form, Input, message, Modal, Transfer } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';

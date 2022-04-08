@@ -1,17 +1,36 @@
+import { createMonitor, getGroups, GetGroupsProps } from '@/api/monitor/monitor';
 import { Button, Checkbox, Col, Form, Input, Modal, Radio, Row, Select, Steps, Transfer } from 'antd';
 const { TextArea } = Input;
-import React, { useContext, useState } from 'react';
-import { AlarmModes, interfaceList, layout, SlientList, tailLayout } from '../index.type';
-import { MonitorConext } from '../monitor-context';
+import React, { useContext, useEffect, useState } from 'react';
+import { AlarmModes, interfaceList, layout, MonitorItemProps, SilentList, tailLayout } from '../index.type';
+import { MonitorContext } from '../monitor-context';
 const { Step } = Steps;
 const { Option } = Select;
 
 const CreateMonitor = () => {
-  const { openNew, setOpenNew, setHostVisible, monitorIndexs, form } = useContext(MonitorConext) || {};
+  const { openNew, setOpenNew, setHostVisible, monitorIndexs, form } = useContext(MonitorContext) || {};
   const [missionForm] = Form.useForm();
   const [current, setCurrent] = useState(0);
   const [targetKeys, setTargetKeys] = useState<string[]>();
   const [show, setShow] = useState(false);
+  const [groups, setGroups] = useState<GetGroupsProps[]>();
+  const [monitorForm, setMonitorForm] = useState<MonitorItemProps>();
+  const [indexType, setIndexType] = useState(false);
+
+  useEffect(() => {
+    loadGroupsData();
+  }, []);
+  const loadGroupsData = async () => {
+    const { data }: any = await getGroups({ current: 1, pageSize: 100 });
+    setGroups(data);
+  };
+
+  useEffect(() => {
+    if (openNew) {
+      form?.resetFields();
+      missionForm.resetFields();
+    }
+  }, [openNew]);
 
   return (
     <Modal
@@ -34,6 +53,9 @@ const CreateMonitor = () => {
           <Col span={24}>
             {current === 0 ? (
               <Form key={current} {...layout} form={form} name="control-hooks">
+                <Form.Item name="mission_name" label="任务名称" rules={[{ required: true, message: '请输入任务名称' }]}>
+                  <Input placeholder="请输入任务名称" />
+                </Form.Item>
                 <Form.Item name="monitor_hosts" label="监控主机" rules={[{ required: true, message: '请选择主机' }]}>
                   <Button
                     type="link"
@@ -48,8 +70,9 @@ const CreateMonitor = () => {
                   {monitorIndexs && (
                     <Select
                       options={monitorIndexs}
-                      onChange={item => {
+                      onChange={(item, option) => {
                         setShow(interfaceList.includes(item));
+                        // setIndexType(option.index_type);
                       }}
                       fieldNames={{ value: 'monitor_index', label: 'monitor_name' }}
                       placeholder="请选择监控类型"
@@ -59,26 +82,33 @@ const CreateMonitor = () => {
                 </Form.Item>
                 {show && (
                   <Form.Item shouldUpdate name="monitor_interface" label="监控接口" rules={[{ required: true, message: '请选择监控接口' }]}>
-                    <Select placeholder="请选择监控接口">
+                    <Select mode="multiple" placeholder="请选择监控接口">
                       <Option value="all">all</Option>
                       <Option value="eth0">eth0</Option>
+                      <Option value="eth1">eth1</Option>
                     </Select>
                   </Form.Item>
                 )}
+
+                <Form.Item extra="请输入0-100整数" name="monitor_threshold" label="监控阈值" rules={[{ required: true, message: '请输入监控阈值' }]}>
+                  <Input placeholder="请输入监控阈值" prefix="超过" suffix="%即告警" />
+                </Form.Item>
 
                 <Form.Item name="monitor_note" label="备注信息">
                   <TextArea rows={4} placeholder="备注信息" />
                 </Form.Item>
                 <Form.Item {...tailLayout} shouldUpdate>
                   {({ getFieldsValue }) => {
-                    const { monitor_type, monitor_interface, monitor_hosts } = getFieldsValue();
-                    const condition = !!monitor_type && !!(monitor_hosts && monitor_hosts.length > 0);
+                    const { monitor_type, monitor_interface, monitor_hosts, mission_name } = getFieldsValue();
+                    const condition = !!mission_name && !!monitor_type && !!(monitor_hosts && monitor_hosts.length > 0);
                     const formIsComplete = !show ? condition : !!monitor_interface && condition;
                     return (
                       <Button
                         onClick={() => {
                           setCurrent(c => c + 1);
-                          console.log('form', form?.getFieldsValue());
+                          const { monitor_hosts, monitor_interface, monitor_type, monitor_note, mission_name } = form?.getFieldsValue();
+                          const interfaces = monitor_interface ? JSON.stringify(monitor_interface) : undefined;
+                          setMonitorForm({ ...monitorForm, monitor_type, mission_name, monitor_note, monitor_hosts: JSON.stringify(monitor_hosts), monitor_interface: interfaces });
                         }}
                         disabled={!formIsComplete}
                         style={{ marginRight: '8px' }}
@@ -96,7 +126,7 @@ const CreateMonitor = () => {
                 initialValues={{
                   monitor_frequency: 5,
                   monitor_threshold: 2,
-                  alarm_slient: 120,
+                  alarm_silent: 120,
                 }}
                 key={current}
                 {...layout}
@@ -124,26 +154,22 @@ const CreateMonitor = () => {
                 </Form.Item>
                 <Form.Item name="alarm_group" label="告警联系人组" rules={[{ required: true, message: '请选择联系人组' }]}>
                   <Transfer
-                    rowKey={item => item.id}
-                    dataSource={[
-                      { title: '运维小队1', id: '1' },
-                      { title: '运维小队2', id: '2' },
-                      { title: '运维小队3', id: '3' },
-                    ]}
+                    rowKey={item => `${item.group_id}`}
+                    dataSource={groups}
                     titles={['已有联系组', '已选联系组']}
                     targetKeys={targetKeys}
                     onChange={nextTargetKeys => {
                       console.log('targetKeys:', nextTargetKeys);
                       setTargetKeys(nextTargetKeys);
                     }}
-                    render={item => item.title}
+                    render={item => item.group_name || ''}
                   />
                 </Form.Item>
                 <Form.Item name="alarm_mode" label="告警方式" rules={[{ required: true, message: '请选择告警方式' }]}>
                   <Checkbox.Group options={AlarmModes} />
                 </Form.Item>
-                <Form.Item extra="相同的告警信息，沉默期内只发送一次。" name="alarm_slient" label="沉默间隔">
-                  <Select options={SlientList} allowClear style={{ width: '100%' }} optionLabelProp="label"></Select>
+                <Form.Item extra="相同的告警信息，沉默期内只发送一次。" name="alarm_silent" label="沉默间隔">
+                  <Select options={SilentList} allowClear style={{ width: '100%' }} optionLabelProp="label"></Select>
                 </Form.Item>
                 <Form.Item {...tailLayout} shouldUpdate>
                   {({ getFieldsValue }) => {
@@ -152,8 +178,13 @@ const CreateMonitor = () => {
                     return (
                       <>
                         <Button
-                          onClick={() => {
+                          onClick={async () => {
                             console.log('missionForm', missionForm.getFieldsValue());
+                            const stepForm = missionForm.getFieldsValue();
+                            const groups = JSON.stringify(stepForm.alarm_group);
+                            const mode = JSON.stringify(alarm_mode);
+                            await createMonitor({ ...monitorForm, ...stepForm, alarm_group: groups, alarm_mode: mode });
+                            setOpenNew?.(false);
                           }}
                           disabled={!formIsComplete}
                           style={{ marginRight: '8px' }}

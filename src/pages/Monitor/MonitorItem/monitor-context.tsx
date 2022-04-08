@@ -2,7 +2,7 @@ import { GetMonitorIndexProps, getMonitorIndexs } from '@/api/monitor/monitor';
 import { Form, FormInstance } from 'antd';
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 
-export const MonitorConext = createContext<
+export const MonitorContext = createContext<
   | {
       monitorIndexs?: GetMonitorIndexProps[];
       setHostVisible: (v: boolean) => void;
@@ -16,7 +16,6 @@ export const MonitorConext = createContext<
 
 export const MonitorProvider = ({ children }: { children: ReactNode }) => {
   const [monitorIndexs, setMonitorIndexs] = useState<GetMonitorIndexProps[]>();
-  const [selectHosts, setSelectHosts] = useState<React.Key[]>();
   const [hostVisible, setHostVisible] = useState(false);
   const [openNew, setOpenNew] = useState(false);
   const [form] = Form.useForm();
@@ -30,7 +29,7 @@ export const MonitorProvider = ({ children }: { children: ReactNode }) => {
     setMonitorIndexs(data);
   };
   return (
-    <MonitorConext.Provider
+    <MonitorContext.Provider
       value={{
         monitorIndexs,
         setHostVisible,
@@ -41,6 +40,6 @@ export const MonitorProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
-    </MonitorConext.Provider>
+    </MonitorContext.Provider>
   );
 };

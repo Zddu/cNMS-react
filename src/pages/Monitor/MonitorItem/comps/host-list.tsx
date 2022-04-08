@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { HostColumnProps } from '../index.type';
 import DirectoryTree from 'antd/lib/tree/DirectoryTree';
 import { getAllDevice } from '@/api/device/device';
-import { MonitorConext } from '../monitor-context';
+import { MonitorContext } from '../monitor-context';
 
 const hostColumns = [
   {
@@ -25,7 +25,7 @@ const hostColumns = [
 const HostList = () => {
   const [Hosts, setHosts] = useState<HostColumnProps[]>();
   const [hostsChange, setHostsChange] = useState<React.Key[]>();
-  const { hostVisible, setHostVisible, form } = useContext(MonitorConext) || {};
+  const { hostVisible, setHostVisible, form } = useContext(MonitorContext) || {};
 
   const [pagination, setPagination] = useState({
     current: 1,

@@ -1,17 +1,15 @@
-import ProTable, { ProColumns } from '@ant-design/pro-table';
-import { Button, Checkbox, Col, Form, Input, Modal, Pagination, Progress, Radio, Row, Select, Steps, Table, Transfer } from 'antd';
+import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table';
+import { Button, Progress } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
-import { MonitorItem } from '../index.type';
-import React, { useContext } from 'react';
-import { MonitorConext } from '../monitor-context';
+import { MonitorItemProps } from '../index.type';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { MonitorContext } from '../monitor-context';
+import { deleteMonitorItem, getMonitorList, GetMonitorProps } from '@/api/monitor/monitor';
 
-const tableListDataSource: MonitorItem[] = [];
-
-const columns: ProColumns<MonitorItem>[] = [
+const columns: ProColumns<MonitorItemProps>[] = [
   {
     title: '监控名称',
-    width: 80,
-    dataIndex: 'monitor_name',
+    dataIndex: 'mission_name',
     render: _ => <a>{_}</a>,
   },
   {
@@ -28,7 +26,6 @@ const columns: ProColumns<MonitorItem>[] = [
     title: '状态',
     width: 80,
     dataIndex: 'monitor_status',
-    initialValue: 'all',
     valueEnum: {
       all: { text: '全部', status: 'Default' },
       close: { text: '关闭', status: 'Default' },
@@ -39,6 +36,7 @@ const columns: ProColumns<MonitorItem>[] = [
   },
   {
     title: '健康度',
+    width: 200,
     dataIndex: 'monitor_health',
     render: () => (
       <>
@@ -48,20 +46,31 @@ const columns: ProColumns<MonitorItem>[] = [
   },
   {
     title: <>创建时间</>,
-    width: 140,
     key: 'create_time',
     dataIndex: 'create_time',
-    valueType: 'date',
+    valueType: 'dateTime',
   },
   {
     title: '操作',
     width: 180,
     key: 'option',
     valueType: 'option',
-    render: () => [
+    render: (_, record, __, action) => [
       <Button key="disabled">禁用</Button>,
       <Button key="edit">编辑</Button>,
-      <Button type="link" danger>
+      <Button
+        type="link"
+        danger
+        onClick={async () => {
+          // todo
+          if (record.mission_id) {
+            await deleteMonitorItem(record.mission_id);
+            if (action && action.reloadAndRest) {
+              await action.reloadAndRest();
+            }
+          }
+        }}
+      >
         删除
       </Button>,
     ],
@@ -69,24 +78,33 @@ const columns: ProColumns<MonitorItem>[] = [
 ];
 
 const MonitorTable = () => {
-  const { setOpenNew } = useContext(MonitorConext) || {};
+  const { setOpenNew, openNew } = useContext(MonitorContext) || {};
+  const [params, setParams] = useState<Partial<GetMonitorProps>>({ current: 1, pageSize: 20 });
+  const tableRef = useRef<ActionType>();
+
+  const request = async (param: GetMonitorProps) => {
+    const { data } = await getMonitorList(param);
+    return {
+      success: true,
+      data: data,
+    };
+  };
+  useEffect(() => {
+    console.log('openNew', openNew);
+    if (!openNew) {
+      setParams({ current: 1, pageSize: 20 });
+      tableRef.current?.reload();
+    }
+  }, [openNew]);
   return (
-    <ProTable<MonitorItem>
+    <ProTable<MonitorItemProps>
+      actionRef={tableRef}
       columns={columns}
-      request={(params, sorter, filter) => {
-        console.log(params, sorter, filter);
-        return Promise.resolve({
-          data: tableListDataSource,
-          success: true,
-        });
-      }}
-      rowKey="key"
+      request={request}
+      params={params}
+      rowKey="mission_id"
       pagination={{
         showQuickJumper: true,
-      }}
-      search={{
-        optionRender: false,
-        collapsed: false,
       }}
       dateFormatter="string"
       headerTitle="监控任务"
