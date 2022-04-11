@@ -91,7 +91,7 @@ const CreateMonitor = () => {
                 )}
 
                 <Form.Item extra="请输入0-100整数" name="monitor_threshold" label="监控阈值" rules={[{ required: true, message: '请输入监控阈值' }]}>
-                  <Input placeholder="请输入监控阈值" prefix="超过" suffix="%即告警" />
+                  <Input type="number" placeholder="请输入监控阈值" prefix="超过" suffix="%即告警" />
                 </Form.Item>
 
                 <Form.Item name="monitor_note" label="备注信息">
@@ -106,9 +106,9 @@ const CreateMonitor = () => {
                       <Button
                         onClick={() => {
                           setCurrent(c => c + 1);
-                          const { monitor_hosts, monitor_interface, monitor_type, monitor_note, mission_name } = form?.getFieldsValue();
+                          const { monitor_hosts, monitor_interface, monitor_type, monitor_note, mission_name, monitor_threshold } = form?.getFieldsValue();
                           const interfaces = monitor_interface ? JSON.stringify(monitor_interface) : undefined;
-                          setMonitorForm({ ...monitorForm, monitor_type, mission_name, monitor_note, monitor_hosts: JSON.stringify(monitor_hosts), monitor_interface: interfaces });
+                          setMonitorForm({ ...monitorForm, monitor_threshold, monitor_type, mission_name, monitor_note, monitor_hosts: JSON.stringify(monitor_hosts), monitor_interface: interfaces });
                         }}
                         disabled={!formIsComplete}
                         style={{ marginRight: '8px' }}
@@ -125,7 +125,7 @@ const CreateMonitor = () => {
               <Form
                 initialValues={{
                   monitor_frequency: 5,
-                  monitor_threshold: 2,
+                  alarm_threshold: 2,
                   alarm_silent: 120,
                 }}
                 key={current}
@@ -143,7 +143,7 @@ const CreateMonitor = () => {
                     <Radio value={120}>120分钟</Radio>
                   </Radio.Group>
                 </Form.Item>
-                <Form.Item name="monitor_threshold" label="告警阈值">
+                <Form.Item name="alarm_threshold" label="告警阈值">
                   <Radio.Group>
                     <Radio value={1}>1次</Radio>
                     <Radio value={2}>2次</Radio>
