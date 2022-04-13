@@ -1,12 +1,14 @@
 export type AlarmHistoryItem = {
-  key: number;
-  alarm_id: number;
-  monitor_name: string;
-  monitor_type: number;
-  monitor_host: string;
-  alarm_status: string;
-  alarm_continued: string;
-  alarm_inform_type: string;
-  alarm_inform_target: string;
-  create_time: Date;
+  alarm_id?: number;
+  mission_name?: string;
+  monitor_type?: string;
+  monitor_host?: string;
+  alarm_status?: number;
+  alarm_times?: number;
+  alarm_continued?: number;
+  alarm_inform_type?: string;
+  alarm_inform_target?: string;
+  error_info?: string;
+  create_time?: Date;
+  update_time?: Date;
 };

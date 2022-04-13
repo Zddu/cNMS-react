@@ -3,10 +3,10 @@
 // ==================
 // 第三方库
 // ==================
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { Layout, Menu as MenuAntd } from "antd";
-import { Link } from "react-router-dom";
-import { cloneDeep } from "lodash";
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { Layout, Menu as MenuAntd } from 'antd';
+import { Link } from 'react-router-dom';
+import { cloneDeep } from 'lodash';
 
 const { Sider } = Layout;
 const { SubMenu, Item } = MenuAntd;
@@ -14,15 +14,15 @@ const { SubMenu, Item } = MenuAntd;
 // ==================
 // 自定义的东西
 // ==================
-import "./index.less";
-import ImgLogo from "@/assets/logo.png";
-import Icon from "@/components/Icon";
+import './index.less';
+import ImgLogo from '@/assets/logo.png';
+import Icon from '@/components/Icon';
 
 // ==================
 // 类型声明
 // ==================
-import { History } from "history";
-import { Menu } from "@/models/index.type";
+import { History } from 'history';
+import { Menu } from '@/models/index.type';
 
 interface Props {
   data: Menu[]; // 所有的菜单数据
@@ -40,9 +40,9 @@ export default function MenuCom(props: Props): JSX.Element {
 
   // 当页面路由跳转时，即location发生改变，则更新选中项
   useEffect(() => {
-    const paths = props.location.pathname.split("/").filter((item) => !!item);
+    const paths = props.location.pathname.split('/').filter(item => !!item);
     setChosedKey([props.location.pathname]);
-    setOpenKeys(paths.map((item) => `/${item}`));
+    setOpenKeys(paths.map(item => `/${item}`));
   }, [props.location]);
 
   // ==================
@@ -51,7 +51,7 @@ export default function MenuCom(props: Props): JSX.Element {
 
   // 菜单被选择
   const onSelect = useCallback(
-    (e) => {
+    e => {
       props.history.push(e.key);
     },
     [props.history]
@@ -119,27 +119,13 @@ export default function MenuCom(props: Props): JSX.Element {
   }, [props.data, dataToJson, makeTreeDom]);
 
   return (
-    <Sider
-      width={256}
-      className="sider"
-      trigger={null}
-      collapsible
-      collapsed={props.collapsed}
-    >
-      <div className={props.collapsed ? "menuLogo hide" : "menuLogo"}>
+    <Sider width={256} className="sider" trigger={null} collapsible collapsed={props.collapsed}>
+      <div className={props.collapsed ? 'menuLogo hide' : 'menuLogo'}>
         <Link to="/">
-          <img src={ImgLogo} />
-          <div>React-Admin</div>
+          <div>CoolNetworkSystem</div>
         </Link>
       </div>
-      <MenuAntd
-        theme="dark"
-        mode="inline"
-        selectedKeys={chosedKey}
-        {...(props.collapsed ? {} : { openKeys })}
-        onOpenChange={(keys: string[]) => setOpenKeys(keys)}
-        onSelect={onSelect}
-      >
+      <MenuAntd theme="dark" mode="inline" selectedKeys={chosedKey} {...(props.collapsed ? {} : { openKeys })} onOpenChange={(keys: string[]) => setOpenKeys(keys)} onSelect={onSelect}>
         {treeDom}
       </MenuAntd>
     </Sider>
