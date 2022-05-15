@@ -59,8 +59,9 @@ const [NotFound, NoPower, Home, MenuAdmin, PowerAdmin, RoleAdmin, UserAdmin, Dev
 import { RootState, Dispatch } from '@/store';
 import { Menu } from '@/models/index.type';
 import { History } from 'history';
+import classNames from 'classnames';
 
-type Props = {
+export type Props = {
   history: History;
   location: Location;
 };
@@ -110,10 +111,11 @@ function BasicLayoutCom(props: Props): JSX.Element {
        * 检查当前用户是否有该路由页面的权限
        * 没有则跳转至401页
        * **/
+      console.log('props.location.pathname', props.location.pathname);
+
       if (checkRouterPower(props.location.pathname)) {
         return <Component {...props} />;
       }
-      console.log('props.location.pathname', props.location.pathname);
       return <Redirect to="/nopower" />;
     },
     [checkRouterPower]
@@ -133,7 +135,7 @@ function BasicLayoutCom(props: Props): JSX.Element {
           location={props.location}
           history={props.history}
         /> */}
-        <Content className="content">
+        <Content className={classNames('content', { home: props.location.pathname === '/home' })}>
           <ErrorBoundary location={props.location}>
             <CacheSwitch>
               <Redirect exact from="/" to="/home" />

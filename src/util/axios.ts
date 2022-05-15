@@ -6,7 +6,7 @@ import tools from './tools';
 import { merge } from 'lodash';
 import { message } from 'antd';
 const instance = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'http://82.157.237.245:80',
   timeout: 10000,
   withCredentials: false,
 });

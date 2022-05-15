@@ -1,21 +1,37 @@
 /* 主页 */
 
-import React from "react";
-import ImgLogo from "@/assets/react-logo.jpg";
+import React from 'react';
 
-import "./index.less";
+import './index.less';
+import { Card, Col, Row, Statistic } from 'antd';
+import Topology from './comps/topology';
 
 export default function HomePageContainer(): JSX.Element {
   return (
     <div className="page-home all_nowarp">
-      <div className="box">
-        <img src={ImgLogo} />
-        <div className="title">React-admin</div>
-        <div className="info">
-          标准React+Redux分层结构，react17、router4、antd4、webpack5、ES6+
-        </div>
-        <div className="info">动态菜单配置，权限精确到按钮</div>
-      </div>
+      <Row gutter={[16, 16]}>
+        <Col span={8}>
+          <Card style={{ width: '100%' }}>
+            <Statistic title="设备" formatter={value => <a style={{ fontSize: '28px' }}>{value}</a>} valueStyle={{ fontSize: '14px' }} value={2} precision={0} suffix="个" />
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card style={{ width: '100%' }}>
+            <Statistic title="监控" formatter={value => <a style={{ fontSize: '28px' }}>{value}</a>} valueStyle={{ fontSize: '14px' }} value={5} precision={0} suffix="项" />
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card style={{ width: '100%' }}>
+            <Statistic title="告警" formatter={value => <a style={{ fontSize: '28px' }}>{value}</a>} valueStyle={{ fontSize: '14px' }} value={1} precision={0} suffix="项" />
+          </Card>
+        </Col>
+        <Col span={24}>
+          <Topology />
+        </Col>
+        <Col span={8}></Col>
+        <Col span={8}></Col>
+        <Col span={8}></Col>
+      </Row>
     </div>
   );
 }
