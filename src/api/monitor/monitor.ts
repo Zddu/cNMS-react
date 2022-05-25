@@ -55,11 +55,20 @@ export interface GetAlarmsProps extends BaseProps {
   update_time?: Date;
 }
 
+export interface GetTopologiesProps {
+  id?: number;
+  sip?: string;
+  dip?: string;
+  sifindex?: string;
+  difindex?: string;
+}
+
 export const getMonitorIndexs = () => getData<GetMonitorIndexProps[]>('/monitor/index');
 export const getContacts = (params: Partial<GetContactsProps>) => getData<GetContactsProps[]>('/monitor/alarm/contact', params);
 export const getGroups = (params: Partial<GetGroupsProps>) => getData<GetGroupsProps[]>('/monitor/alarm/group', params);
 export const getMonitorList = (params: GetMonitorProps) => getData<GetMonitorProps[]>('/monitor', params);
 export const getAlarms = (params: GetAlarmsProps) => getData<GetAlarmsProps[]>('/monitor/alarms', params);
+export const getTopologies = () => getData<Record<string, any>>('/monitor/topology');
 
 export const createContacts = (contact: AlarmContactsItem) => postData('/monitor/alarm/contact', contact);
 export const createGroup = (group: AlarmGroupItem) => postData('/monitor/alarm/group', group);
