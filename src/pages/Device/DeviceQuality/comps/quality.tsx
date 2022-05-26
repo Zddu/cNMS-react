@@ -1,11 +1,17 @@
+import { GetDeviceInfoProps, getDevice } from '@/api/device/device';
 import BasicChart from '@/components/BasicChart';
+import { RootState } from '@/store';
 import { Col, Row } from 'antd';
 import { EChartsOption } from 'echarts';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-const MemoryChart = () => {
+interface ChartProps {
+  data?: GetDeviceInfoProps;
+}
+
+const MemoryChart: FC<ChartProps> = ({ data }) => {
   const [option, setOption] = useState<EChartsOption>();
-
   const memChart = useRef<echarts.EChartsType>();
   const init = () => {
     setOption({
@@ -60,11 +66,11 @@ const MemoryChart = () => {
           },
           data: [
             {
-              value: 60,
+              value: Number(data?.mem[data?.mem.length - 1].mem_usage),
               name: '内存使用率',
             },
             {
-              value: 40,
+              value: 100 - (Number(data?.mem[data?.mem.length - 1].mem_usage) || 0),
               name: 'unused',
               label: {
                 show: false,
@@ -86,7 +92,7 @@ const MemoryChart = () => {
   return <BasicChart style={{ height: '300px' }} options={option} basicInstance={memChart} />;
 };
 
-const CPUChart = () => {
+const CPUChart: FC<ChartProps> = ({ data }) => {
   const [option, setOption] = useState<EChartsOption>();
 
   const cpuChart = useRef<echarts.EChartsType>();
@@ -143,11 +149,11 @@ const CPUChart = () => {
           },
           data: [
             {
-              value: 10,
+              value: data?.cpu[data?.cpu.length - 1].cpu_rate,
               name: 'CPU使用率',
             },
             {
-              value: 90,
+              value: 100 - (data?.cpu[data?.cpu.length - 1].cpu_rate || 0),
               name: 'unused',
               label: {
                 show: false,
@@ -170,6 +176,18 @@ const CPUChart = () => {
 };
 
 const Quality = () => {
+  const [device, setDevice] = useState<GetDeviceInfoProps>();
+  const device_id = useSelector((state: RootState) => state.app.device_id);
+  useEffect(() => {
+    if (device_id) {
+      getDeviceData(device_id);
+    }
+  }, [device_id]);
+
+  const getDeviceData = async (device_id: string) => {
+    const { data } = await getDevice(device_id);
+    setDevice(data);
+  };
   return (
     <Row gutter={16} className="quality">
       <Col span={12}>
@@ -180,13 +198,13 @@ const Quality = () => {
             <li>已用内存: 1.4GB</li>
             <li>可用内存: 0.6GB</li>
           </ul>
-          <MemoryChart />
+          {device && <MemoryChart data={device} />}
         </div>
       </Col>
       <Col span={12}>
         <div className="quality-item">
           <h3 className="title">CPU使用率</h3>
-          <CPUChart />
+          {device && <CPUChart data={device} />}
         </div>
       </Col>
     </Row>

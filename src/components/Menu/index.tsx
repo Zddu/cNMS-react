@@ -72,34 +72,36 @@ export default function MenuCom(props: Props): JSX.Element {
 
   // 构建树结构
   const makeTreeDom = useCallback((data: Menu[]): JSX.Element[] => {
-    return data.map((item: Menu) => {
-      if (item.children) {
-        return (
-          <SubMenu
-            key={item.url}
-            title={
-              !item.parent && item.icon ? (
-                <span>
-                  <Icon type={item.icon} />
-                  <span>{item.title}</span>
-                </span>
-              ) : (
-                item.title
-              )
-            }
-          >
-            {makeTreeDom(item.children)}
-          </SubMenu>
-        );
-      } else {
-        return (
-          <Item key={item.url}>
-            {!item.parent && item.icon ? <Icon type={item.icon} /> : null}
-            <span>{item.title}</span>
-          </Item>
-        );
-      }
-    });
+    return data
+      .filter(d => !d.isHidden)
+      .map((item: Menu) => {
+        if (item.children) {
+          return (
+            <SubMenu
+              key={item.url}
+              title={
+                !item.parent && item.icon ? (
+                  <span>
+                    <Icon type={item.icon} />
+                    <span>{item.title}</span>
+                  </span>
+                ) : (
+                  item.title
+                )
+              }
+            >
+              {makeTreeDom(item.children)}
+            </SubMenu>
+          );
+        } else {
+          return (
+            <Item key={item.url}>
+              {!item.parent && item.icon ? <Icon type={item.icon} /> : null}
+              <span>{item.title}</span>
+            </Item>
+          );
+        }
+      });
   }, []);
 
   // ==================

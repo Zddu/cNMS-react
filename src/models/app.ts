@@ -16,10 +16,17 @@ const defaultState: AppState = {
     userBasicInfo: null, // 用户的基础信息，id,用户名...
   }, // 当前用户基本信息
   powersCode: [], // 当前用户拥有的权限code列表(仅保留了code)，页面中的按钮的权限控制将根据此数据源判断
+  device_id: ''
 };
 export default {
   state: defaultState,
   reducers: {
+    reducerDeviceId(state: AppState, payload: string) {
+      return {
+        ...state,
+        device_id: payload,
+      };
+    },
     reducerUserInfo(state: AppState, payload: UserInfo) {
       return {
         ...state,
@@ -40,6 +47,11 @@ export default {
   },
 
   effects: (dispatch: Dispatch) => ({
+
+    async setDeviceId(params: string) {
+      dispatch.app.reducerDeviceId(params);
+      return 'success';
+    },
     /**
      * 登录
      * @param { username, password } params

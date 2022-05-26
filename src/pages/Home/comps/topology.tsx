@@ -18,7 +18,6 @@ const Topology = () => {
         node.img = ServerHost;
         node.label = node.label === 'host' ? '服务器主机' : node.label; // todo
       });
-      console.log('data', data);
 
       const tooltip = new G6.Tooltip({
         offsetX: 10,
@@ -64,6 +63,10 @@ const Topology = () => {
       if (data.nodes.every((node: any) => Boolean(node.img))) {
         graph.data(data);
       }
+
+      graph.on('node:click', e => {
+        console.log('node:click', e?.item?.getModel());
+      });
       graph.render();
     }
   }, []);

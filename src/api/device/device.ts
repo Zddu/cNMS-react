@@ -1,3 +1,4 @@
+import { DeviceProps } from './../../pages/Device/DeviceView/index.type';
 import { getData, postData } from '@/util/axios';
 
 export interface BasicItemProps {
@@ -87,6 +88,7 @@ export interface GetDeviceInfoProps {
   mem: Memory[];
   disk: Disk[];
   interface: Interface[];
+  device: DeviceProps;
 }
 
 export interface PostSSHConfig {
