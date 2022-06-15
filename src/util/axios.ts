@@ -6,7 +6,7 @@ import tools from './tools';
 import { merge } from 'lodash';
 import { message } from 'antd';
 const instance = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'http://82.157.237.245:80',
   timeout: 10000,
   withCredentials: false,
 });
@@ -91,6 +91,7 @@ axios.interceptors.response.use(response => {
 
 export const getData: IGetData = (url, params, options) => loadData('get', { url, params, options });
 export const postData: IGetData = (url, params, options) => loadData('post', { url, params, options });
+export const deleteData: IGetData = (url, params, options) => loadData('delete', { url, params, options });
 export const putData: IGetData = (url, params, options) => loadData('put', { url, params, options });
 
 export default axios;

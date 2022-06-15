@@ -3,30 +3,22 @@
 // ==================
 // 第三方库
 // ==================
-import React, { useState, useCallback } from "react";
-import { Link } from "react-router-dom";
-import { Layout, Tooltip, Menu, Dropdown } from "antd";
-import {
-  MenuFoldOutlined,
-  FullscreenOutlined,
-  FullscreenExitOutlined,
-  GithubOutlined,
-  ChromeOutlined,
-  LogoutOutlined,
-  SmileOutlined,
-} from "@ant-design/icons";
+import React, { useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
+import { Layout, Tooltip, Menu, Dropdown } from 'antd';
+import { MenuFoldOutlined, FullscreenOutlined, FullscreenExitOutlined, GithubOutlined, ChromeOutlined, LogoutOutlined, SmileOutlined } from '@ant-design/icons';
 
 const { Header } = Layout;
 
 // ==================
 // 自定义的东西
 // ==================
-import "./index.less";
+import './index.less';
 
 // ==================
 // 类型声明
 // ==================
-import { UserInfo } from "@/models/index.type";
+import { UserInfo } from '@/models/index.type';
 
 interface Element {
   webkitRequestFullscreen?: () => void;
@@ -79,9 +71,9 @@ export default function HeaderCom(props: Props): JSX.Element {
 
   // 退出登录
   const onMenuClick = useCallback(
-    (e) => {
+    e => {
       // 退出按钮被点击
-      if (e.key === "logout") {
+      if (e.key === 'logout') {
         props.onLogout();
       }
     },
@@ -91,29 +83,13 @@ export default function HeaderCom(props: Props): JSX.Element {
   const u = props.userinfo.userBasicInfo;
   return (
     <Header className="header">
-      <Tooltip
-        placement="bottom"
-        title={props.collapsed ? "展开菜单" : "收起菜单"}
-      >
-        <MenuFoldOutlined
-          className={props.collapsed ? "trigger fold" : "trigger"}
-          onClick={() => props.onToggle()}
-        />
+      <Tooltip placement="bottom" title={props.collapsed ? '展开菜单' : '收起菜单'}>
+        <MenuFoldOutlined className={props.collapsed ? 'trigger fold' : 'trigger'} onClick={() => props.onToggle()} />
       </Tooltip>
       <div className="rightBox">
-        <Tooltip placement="bottom" title={fullScreen ? "退出全屏" : "全屏"}>
+        <Tooltip placement="bottom" title={fullScreen ? '退出全屏' : '全屏'}>
           <div className="full all_center">
-            {fullScreen ? (
-              <FullscreenExitOutlined
-                className="icon"
-                onClick={exitFullScreen}
-              />
-            ) : (
-              <FullscreenOutlined
-                className="icon"
-                onClick={requestFullScreen}
-              />
-            )}
+            {fullScreen ? <FullscreenExitOutlined className="icon" onClick={exitFullScreen} /> : <FullscreenOutlined className="icon" onClick={requestFullScreen} />}
           </div>
         </Tooltip>
         {u ? (
@@ -121,23 +97,8 @@ export default function HeaderCom(props: Props): JSX.Element {
             overlay={
               <Menu className="menu" selectedKeys={[]} onClick={onMenuClick}>
                 <Menu.Item>
-                  <a
-                    href="https://blog.isluo.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <ChromeOutlined />
-                    blog.isluo.com
-                  </a>
-                </Menu.Item>
-                <Menu.Item>
-                  <a
-                    href="https://github.com/javaLuo/react-admin"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <GithubOutlined />
-                    GitHub
+                  <a href="https://gitee.com/zdde/cool-network-system" target="_blank" rel="noopener noreferrer">
+                    CoolNetworkSystem
                   </a>
                 </Menu.Item>
                 <Menu.Divider />

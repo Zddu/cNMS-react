@@ -9,6 +9,7 @@ export interface MenuParam {
   sorts: number; // 排序编号
   conditions: number; // 状态，1启用，-1禁用
   children?: Menu[]; // 子菜单
+  isHidden?: boolean;
 }
 
 // 菜单对象
@@ -93,6 +94,7 @@ export interface PowerTree extends Menu {
 export interface AppState {
   userinfo: UserInfo;
   powersCode: string[];
+  device_id?: string;
 }
 
 // ./sys.js的state类型
@@ -105,8 +107,8 @@ export interface SysState {
 // 接口的返回值类型
 export type Res =
   | {
-      status: number; // 状态，200成功
-      data?: any; // 返回的数据
-      message?: string; // 返回的消息
-    }
+    status: number; // 状态，200成功
+    data?: any; // 返回的数据
+    message?: string; // 返回的消息
+  }
   | undefined;

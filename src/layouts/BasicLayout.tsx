@@ -33,7 +33,7 @@ const { Content } = Layout;
 // ==================
 // 异步加载各路由模块
 // ==================
-const [NotFound, NoPower, Home, MenuAdmin, PowerAdmin, RoleAdmin, UserAdmin, DeviceView] = [
+const [NotFound, NoPower, Home, MenuAdmin, PowerAdmin, RoleAdmin, UserAdmin, DeviceView, DeviceQuality, MonitorItem, AlarmHistory, AlarmContacts, AlarmGroup] = [
   () => import(`../pages/ErrorPages/404`),
   () => import(`../pages/ErrorPages/401`),
   () => import(`../pages/Home`),
@@ -42,6 +42,11 @@ const [NotFound, NoPower, Home, MenuAdmin, PowerAdmin, RoleAdmin, UserAdmin, Dev
   () => import(`../pages/System/RoleAdmin`),
   () => import(`../pages/System/UserAdmin`),
   () => import(`../pages/Device/DeviceView`),
+  () => import(`../pages/Device/DeviceQuality`),
+  () => import(`../pages/Monitor/MonitorItem`),
+  () => import(`../pages/Alarm/AlarmHistory`),
+  () => import(`../pages/Alarm/AlarmContacts`),
+  () => import(`../pages/Alarm/AlarmGroup`),
 ].map(item => {
   return loadable(item as any, {
     fallback: <Loading />,
@@ -54,8 +59,9 @@ const [NotFound, NoPower, Home, MenuAdmin, PowerAdmin, RoleAdmin, UserAdmin, Dev
 import { RootState, Dispatch } from '@/store';
 import { Menu } from '@/models/index.type';
 import { History } from 'history';
+import classNames from 'classnames';
 
-type Props = {
+export type Props = {
   history: History;
   location: Location;
 };
@@ -105,11 +111,9 @@ function BasicLayoutCom(props: Props): JSX.Element {
        * 检查当前用户是否有该路由页面的权限
        * 没有则跳转至401页
        * **/
-      if (checkRouterPower(props.location.pathname)) {
-        return <Component {...props} />;
-      }
       console.log('props.location.pathname', props.location.pathname);
-      if (props.location.pathname === '/device/ssh') {
+
+      if (checkRouterPower(props.location.pathname)) {
         return <Component {...props} />;
       }
       return <Redirect to="/nopower" />;
@@ -131,7 +135,7 @@ function BasicLayoutCom(props: Props): JSX.Element {
           location={props.location}
           history={props.history}
         /> */}
-        <Content className="content">
+        <Content className={classNames('content', { home: props.location.pathname === '/home' })}>
           <ErrorBoundary location={props.location}>
             <CacheSwitch>
               <Redirect exact from="/" to="/home" />
@@ -143,6 +147,11 @@ function BasicLayoutCom(props: Props): JSX.Element {
               {/*<!-- 使用CacheRoute可以缓存该页面，类似Keep-alive -->*/}
               <CacheRoute exact path="/system/useradmin" render={props => onEnter(UserAdmin, props)} />
               <Route exact path="/device/view" render={props => onEnter(DeviceView, props)} />
+              <Route exact path="/device/quality" render={props => onEnter(DeviceQuality, props)} />
+              <Route exact path="/monitor/item" render={props => onEnter(MonitorItem, props)} />
+              <Route exact path="/alarm/contacts" render={props => onEnter(AlarmContacts, props)} />
+              <Route exact path="/alarm/history" render={props => onEnter(AlarmHistory, props)} />
+              <Route exact path="/alarm/group" render={props => onEnter(AlarmGroup, props)} />
               <Route exact path="/nopower" component={NoPower} />
               <Route component={NotFound} />
             </CacheSwitch>

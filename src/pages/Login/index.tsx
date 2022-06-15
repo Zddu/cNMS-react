@@ -193,7 +193,7 @@ function LoginContainer(props: Props): JSX.Element {
         <Form form={form}>
           <div className="title">
             <img src={LogoImg} alt="logo" />
-            <span>React-Admin</span>
+            <span>CoolNSM</span>
           </div>
           <div>
             <Form.Item
